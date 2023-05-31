@@ -20,6 +20,9 @@ namespace LearningBuddy.Infrastructure.Persistence
         public DbSet<LearningSource> Sources { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<FavouriteSubject> FavouriteSubjects { get; set; }
+        public DbSet<FavouriteQuiz> FavouriteQuizzes { get; set; }
+        public DbSet<FavouriteLearningSource> FavouriteLearningSources { get; set; }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)

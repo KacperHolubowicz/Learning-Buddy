@@ -10,7 +10,7 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfSubjects
 {
     public record GetListOfSubjectsQuery : IQuery<PaginatedList<SubjectItemDTO>>
     {
-        public IEnumerable<string> Tags { get; init; } = Enumerable.Empty<string>();
+        public string Name { get; init; } = "";
         public int PageNumber { get; init; } = 1;
         public int PageSize { get; init; } = 10;
     }
@@ -32,7 +32,8 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfSubjects
             return await context.Subjects
                 .Include(s => s.Tags)
                 .AsNoTracking()
-                .Where(s => s.Public)
+                .Where(s => s.Public 
+                    && s.Name.Contains(request.Name))
                 .Select(s => mapper.Map<Subject, SubjectItemDTO>(s))
                 .PaginatedListAsync(request.PageNumber, request.PageSize);
         }

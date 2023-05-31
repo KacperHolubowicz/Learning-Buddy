@@ -11,7 +11,7 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfPrivateSubjects
     public record GetListOfPrivateSubjectsQuery : IQuery<PaginatedList<PrivateSubjectItemDTO>>
     {
         public long UserID { get; set; }
-        public IEnumerable<string> Tags { get; init; }
+        public string Name { get; init; } = "";
         public int PageNumber { get; init; } = 1;
         public int PageSize { get; init; } = 10;
     }
@@ -33,7 +33,8 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfPrivateSubjects
             return await context.Subjects
                 .Include(s => s.Tags)
                 .AsNoTracking()
-                .Where(s => s.Creator.ID == request.UserID)
+                .Where(s => s.Creator.ID == request.UserID
+                    && s.Name.Contains(request.Name))
                 .Select(s => mapper.Map<Subject, PrivateSubjectItemDTO>(s))
                 .PaginatedListAsync(request.PageNumber, request.PageSize);
         }

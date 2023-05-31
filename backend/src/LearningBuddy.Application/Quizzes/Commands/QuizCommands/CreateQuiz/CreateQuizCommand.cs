@@ -4,6 +4,7 @@ using LearningBuddy.Application.Common.Interfaces.Persistence;
 using LearningBuddy.Domain.Quizzes.Entities;
 using LearningBuddy.Domain.Subjects.Entities;
 using LearningBuddy.Domain.Users.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Quizzes.Commands.QuizCommands.CreateQuiz
 {
@@ -74,8 +75,9 @@ namespace LearningBuddy.Application.Quizzes.Commands.QuizCommands.CreateQuiz
         private async Task<Quiz> CommandToEntity(CreateQuizCommand quiz)
         {
             Subject sub = await sContext.Subjects
-                .FindAsync(quiz.SubjectID);
-            if(sub == null)
+                .Include(s => s.Creator)
+                .FirstOrDefaultAsync(s => s.ID == quiz.SubjectID);
+            if(sub == null || (!sub.Public && sub.Creator.ID != quiz.UserID))
             {
                 throw new ResourceNotFoundException("Subject", quiz.SubjectID);
             }
