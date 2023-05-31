@@ -9,5 +9,6 @@
         public bool Finished { get; set; }
         public string CreatorUsername { get; set; }
         public byte[] Thumbnail { get; set; }
+        public bool IsOwner { get; set; }
     }
 }

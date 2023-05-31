@@ -35,7 +35,9 @@ namespace LearningBuddy.Application.Subjects.Queries.GetSubject
             {
                 throw new ResourceNotFoundException("Subject", request.SubjectID);
             }
-            return mapper.Map<SubjectDTO>(entity);
+            var subjectDto = mapper.Map<SubjectDTO>(entity);
+            subjectDto.IsOwner = entity.Creator.ID == request.UserID;
+            return subjectDto;
         }
     }
 }

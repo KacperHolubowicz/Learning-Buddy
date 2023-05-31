@@ -9,6 +9,7 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfLearningSources
 {
     public record GetListOfLearningSourcesQuery : IQuery<PaginatedList<LearningSourceDTO>>
     {
+        public long? UserID { get; set; }
         public long SubjectID { get; set; }
         public int PageNumber { get; init; } = 1;
         public int PageSize { get; init; } = 10;
@@ -29,9 +30,16 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfLearningSources
         public async Task<PaginatedList<LearningSourceDTO>> Handle(GetListOfLearningSourcesQuery request, CancellationToken cancellationToken)
         {
             return await context.Sources
+                .Include(s => s.User)
                 .AsNoTracking()
                 .Where(s => s.Subject.ID == request.SubjectID && s.Public)
-                .Select(s => mapper.Map<LearningSourceDTO>(s))
+                .Select(s => new LearningSourceDTO()
+                {
+                    Description = s.Description,
+                    Name = s.Name,
+                    Type = s.Type.ToString(),
+                    IsOwner = s.User.ID == request.UserID
+                })
                 .PaginatedListAsync(request.PageNumber, request.PageSize);
         }
     }

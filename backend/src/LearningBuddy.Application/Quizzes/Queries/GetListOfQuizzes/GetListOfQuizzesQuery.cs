@@ -4,7 +4,6 @@ using LearningBuddy.Application.Common.Exceptions;
 using LearningBuddy.Application.Common.Extensions;
 using LearningBuddy.Application.Common.Interfaces.Messaging;
 using LearningBuddy.Application.Common.Interfaces.Persistence;
-using LearningBuddy.Domain.Quizzes.Entities;
 using LearningBuddy.Domain.Subjects.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -42,7 +41,16 @@ namespace LearningBuddy.Application.Quizzes.Queries.GetListOfQuizzes
                     .Include(q => q.Questions)
                     .AsNoTracking()
                     .Where(q => q.Subject.ID == request.SubjectID)
-                    .Select(q => mapper.Map<Quiz, QuizItemDTO>(q))
+                    .Select(q => new QuizItemDTO()
+                    {
+                        ID = q.ID,
+                        IsOwner = q.User.ID == request.UserID,
+                        ModifiedAt = q.ModifiedAt,
+                        Name = q.Name,
+                        QuestionCount = (short)q.Questions.Count,
+                        SubjectName = q.Subject.Name,
+                        UserUsername = q.User.Username
+                    })
                     .PaginatedListAsync(request.PageNumber, request.PageSize);
             }
             throw new ResourceNotFoundException("Subject", request.SubjectID);

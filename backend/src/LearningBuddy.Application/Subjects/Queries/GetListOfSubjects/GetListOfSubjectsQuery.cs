@@ -3,13 +3,13 @@ using LearningBuddy.Application.Common;
 using LearningBuddy.Application.Common.Extensions;
 using LearningBuddy.Application.Common.Interfaces.Messaging;
 using LearningBuddy.Application.Common.Interfaces.Persistence;
-using LearningBuddy.Domain.Subjects.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Subjects.Queries.GetListOfSubjects
 {
     public record GetListOfSubjectsQuery : IQuery<PaginatedList<SubjectItemDTO>>
     {
+        public long? UserID { get; set; }
         public string Name { get; init; } = "";
         public int PageNumber { get; init; } = 1;
         public int PageSize { get; init; } = 10;
@@ -30,11 +30,20 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfSubjects
         public async Task<PaginatedList<SubjectItemDTO>> Handle(GetListOfSubjectsQuery request, CancellationToken cancellationToken)
         {
             return await context.Subjects
+                .Include(s => s.Creator)
                 .Include(s => s.Tags)
                 .AsNoTracking()
                 .Where(s => s.Public 
                     && s.Name.Contains(request.Name))
-                .Select(s => mapper.Map<Subject, SubjectItemDTO>(s))
+                .Select(s => new SubjectItemDTO()
+                {
+                    ID = s.ID,
+                    Name = s.Name,
+                    Tags = s.Tags.Select(t => t.Value),
+                    Thumbnail = s.Thumbnail,
+                    Finished = s.Finished,
+                    IsOwner = s.Creator.ID == request.UserID
+                })
                 .PaginatedListAsync(request.PageNumber, request.PageSize);
         }
     }

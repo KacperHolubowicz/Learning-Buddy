@@ -12,5 +12,6 @@
         public string SubjectName { get; set; }
         public short QuestionsCount { get; set; }
         public short AttemptsCount { get; set; }
+        public bool IsOwner { get; set; }
     }
 }

@@ -7,5 +7,6 @@
         public byte[] Thumbnail { get; set; }
         public bool Finished { get; set; }
         public IEnumerable<string> Tags { get; set; }
+        public bool IsOwner { get; set; }
     }
 }

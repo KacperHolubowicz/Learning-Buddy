@@ -28,12 +28,15 @@ namespace LearningBuddy.Application.Quizzes.Queries.GetQuiz
         {
             if(await CheckUsersAccessToSubject(request.UserID, request.QuizID))
             {
-                return mapper.Map<QuizDTO>(await qContext.Quizzes
+                var quizEntity = await qContext.Quizzes
                     .Include(q => q.User)
                     .Include(q => q.Subject)
                     .Include(q => q.Questions)
                     .Include(q => q.Attempts)
-                    .FirstOrDefaultAsync(q => q.ID == request.QuizID));
+                    .FirstOrDefaultAsync(q => q.ID == request.QuizID);
+                var quizDto = mapper.Map<QuizDTO>(quizEntity);
+                quizDto.IsOwner = quizEntity.User.ID == request.UserID;
+                return quizDto;
             }
             throw new ResourceNotFoundException("Quiz", request.QuizID);
         }

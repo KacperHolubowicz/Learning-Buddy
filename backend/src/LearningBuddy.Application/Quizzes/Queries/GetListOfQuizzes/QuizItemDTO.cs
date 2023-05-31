@@ -8,5 +8,6 @@
         public string UserUsername { get; set; }
         public string SubjectName { get; set; }
         public short QuestionCount { get; set; }
+        public bool IsOwner { get; set; }
     }
 }
