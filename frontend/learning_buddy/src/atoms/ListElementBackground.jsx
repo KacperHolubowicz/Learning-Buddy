@@ -7,9 +7,9 @@ function ListElementBackground(props) {
 }
 
 const styling={
-    maxWidth: "900px",
-    maxHeight: "80px",
-    backgroundColor: "#8BB4CD"
+    width: "1200px",
+    height: "100px",
+    backgroundColor: "#8BB4CD",
 }
 
 export default ListElementBackground;

@@ -1,9 +1,9 @@
 function ListElementItem({text}) {
 
     const styling = {
-        minWidth: "180px",
-        maxWidth: "240px",
-        maxHeight: "100px",
+        minWidth: "140px",
+        maxWidth: "300px",
+        height: "100px",
         borderLeftStyle: "solid",
         borderRightStyle: "solid",
         borderColor: "#DAEDFF",

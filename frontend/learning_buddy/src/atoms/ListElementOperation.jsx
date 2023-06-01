@@ -3,9 +3,9 @@ import { useState } from "react";
 function ListElementOperation({text, action}) {
     let [btnColor, setBtnColor] = useState("#C31EEA");
     const styling = {
-        minWidth: "180px",
-        maxWidth: "240px",
-        maxHeight: "100px",
+        minWidth: "80px",
+        maxWidth: "150px",
+        height: "100px",
         borderLeftStyle: "solid",
         borderRightStyle: "solid",
         borderColor: btnColor,
