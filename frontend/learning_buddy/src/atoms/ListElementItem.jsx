@@ -1,9 +1,9 @@
 function ListElementItem({text}) {
 
     const styling = {
-        minWidth: "180px",
-        maxWidth: "240px",
-        maxHeight: "100px",
+        minWidth: "140px",
+        maxWidth: "300px",
+        height: "200px",
         borderLeftStyle: "solid",
         borderRightStyle: "solid",
         borderColor: "#DAEDFF",
@@ -11,6 +11,7 @@ function ListElementItem({text}) {
         color: "#DAEDFF",
         fontSize: "24px",
         justifyContent: "center",
+        borderWidth: "thin",
         display: "inline-flex",
         alignItems: "center",
         textAlign: "center"

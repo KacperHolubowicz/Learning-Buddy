@@ -2,6 +2,7 @@ global using FastEndpoints;
 
 using LearningBuddy.Infrastructure.Persistence;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -13,6 +14,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddFastEndpoints();
+var corsBuilder = new CorsPolicyBuilder();
+corsBuilder.AllowAnyHeader();
+corsBuilder.AllowAnyMethod();
+corsBuilder.WithOrigins("http://localhost:3000");
+corsBuilder.AllowCredentials();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("ReactPolicy", corsBuilder.Build());
+});
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -61,5 +71,6 @@ app.UseHttpsRedirection();
 app.UseDefaultExceptionHandler();
 app.UseAuthorization();
 app.UseFastEndpoints();
+app.UseCors("ReactPolicy");
 
 app.Run();

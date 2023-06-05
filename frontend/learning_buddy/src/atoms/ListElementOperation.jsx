@@ -3,12 +3,12 @@ import { useState } from "react";
 function ListElementOperation({text, action}) {
     let [btnColor, setBtnColor] = useState("#C31EEA");
     const styling = {
-        minWidth: "180px",
-        maxWidth: "240px",
-        maxHeight: "100px",
+        minWidth: "80px",
+        maxWidth: "150px",
+        maxHeight: "200px",
         borderLeftStyle: "solid",
         borderRightStyle: "solid",
-        borderColor: btnColor,
+        borderColor: "#DAEDFF",
         backgroundColor: "inherit",
         color: btnColor,
         fontSize: "24px",
@@ -17,7 +17,8 @@ function ListElementOperation({text, action}) {
         alignItems: "center",
         textAlign: "center",
         transition: "0.5s",
-        cursor: "pointer"
+        cursor: "pointer",
+        borderWidth: "thin"
     }
 
     return (

@@ -1,11 +1,12 @@
 import './App.css';
 import MainPage from "./pages/MainPage";
+import SubjectListPage from './pages/SubjectListPage';
 import MainLayout from "./templates/MainLayout";
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
-  createRoutesFromElements
+  createRoutesFromElements,
 } from "react-router-dom";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
     createRoutesFromElements([
       <Route path="/" element={<MainLayout />} >
         <Route index element={<MainPage />} />
+        <Route path="subjects" element={<SubjectListPage />} />
       </Route>
     ])
   );
