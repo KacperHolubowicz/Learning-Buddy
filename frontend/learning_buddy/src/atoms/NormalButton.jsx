@@ -1,13 +1,15 @@
-function NormalButton({text, action}) {
+function NormalButton({text, action, disable}) {
     return (
-    <button style={styling} onClick={action}>
+    <button style={styling} onClick={action} disabled={disable}>
         {text}
     </button>
     )
 }
 
 const styling = {
+    minWidth: "150px",
     maxWidth: "200px",
+    minHeight: "75px",
     maxHeight: "100px",
     backgroundColor: "#8BB4CD",
     color: "#E4F6FF",

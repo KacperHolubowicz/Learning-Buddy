@@ -8,7 +8,7 @@ function ListElementOperation({text, action}) {
         maxHeight: "200px",
         borderLeftStyle: "solid",
         borderRightStyle: "solid",
-        borderColor: btnColor,
+        borderColor: "#DAEDFF",
         backgroundColor: "inherit",
         color: btnColor,
         fontSize: "24px",
@@ -18,8 +18,7 @@ function ListElementOperation({text, action}) {
         textAlign: "center",
         transition: "0.5s",
         cursor: "pointer",
-        marginRight: "5px",
-        marginLeft: "5px"
+        borderWidth: "thin"
     }
 
     return (

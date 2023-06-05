@@ -1,3 +1,5 @@
+import Stack from "react-bootstrap/esm/Stack";
+
 function Wrapper(props) {
     const styling = {
         width: props.width,
@@ -5,11 +7,12 @@ function Wrapper(props) {
         borderStyle: "solid",
         borderWidth: "3px",
         borderColor: "#275B71",
-        backgroundColor: "#DAEDFF"
+        backgroundColor: "#DAEDFF",
+        marginBottom: "20px"
     }
 
     return (<div style={styling}>
-        {props.children}
+            {props.children}
     </div>);
 }
 

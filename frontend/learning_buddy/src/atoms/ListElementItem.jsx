@@ -11,11 +11,10 @@ function ListElementItem({text}) {
         color: "#DAEDFF",
         fontSize: "24px",
         justifyContent: "center",
+        borderWidth: "thin",
         display: "inline-flex",
         alignItems: "center",
-        textAlign: "center",
-        marginLeft: "5px",
-        marginRight: "5px"
+        textAlign: "center"
     }
 
     return (
