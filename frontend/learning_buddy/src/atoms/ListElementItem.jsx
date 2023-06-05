@@ -3,7 +3,7 @@ function ListElementItem({text}) {
     const styling = {
         minWidth: "140px",
         maxWidth: "300px",
-        height: "100px",
+        height: "200px",
         borderLeftStyle: "solid",
         borderRightStyle: "solid",
         borderColor: "#DAEDFF",
@@ -13,7 +13,9 @@ function ListElementItem({text}) {
         justifyContent: "center",
         display: "inline-flex",
         alignItems: "center",
-        textAlign: "center"
+        textAlign: "center",
+        marginLeft: "5px",
+        marginRight: "5px"
     }
 
     return (

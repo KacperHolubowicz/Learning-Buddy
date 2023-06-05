@@ -5,7 +5,7 @@ function ListElementOperation({text, action}) {
     const styling = {
         minWidth: "80px",
         maxWidth: "150px",
-        height: "100px",
+        maxHeight: "200px",
         borderLeftStyle: "solid",
         borderRightStyle: "solid",
         borderColor: btnColor,
@@ -17,7 +17,9 @@ function ListElementOperation({text, action}) {
         alignItems: "center",
         textAlign: "center",
         transition: "0.5s",
-        cursor: "pointer"
+        cursor: "pointer",
+        marginRight: "5px",
+        marginLeft: "5px"
     }
 
     return (
