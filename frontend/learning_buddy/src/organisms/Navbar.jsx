@@ -23,6 +23,9 @@ function Navbar() {
                         <Col xs={2}>
                             <NavbarItem text="Favourites" action={() => navigate("/favourites")}/>
                         </Col>
+                        <Col xs={2}>
+                            <NavbarItem text="Your account" action={() => navigate("/user")}/>
+                        </Col>
                         <Col style={{display:'flex', justifyContent:'right'}}>
                             <NavbarItem text="Logout" action={() => navigate("/logout")} />
                         </Col>

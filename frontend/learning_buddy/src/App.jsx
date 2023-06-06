@@ -20,13 +20,8 @@ function App() {
     createRoutesFromElements([
       <Route path="/" element={<MainLayout />} >
         <Route index element={<MainPage />} />
-        <Route path="subjects" element={<SubjectListPage />}>
-          <Route path=":id" element={<SubjectPage />}>
-            <Route element={<Authorize />} >
-
-            </Route>
-          </Route>
-        </Route>
+        <Route path="subjects" element={<SubjectListPage />} />
+        <Route path="subjects/:id" element={<SubjectPage />} />
         <Route path="login" element={<LoginPage />} />
       </Route>
     ])

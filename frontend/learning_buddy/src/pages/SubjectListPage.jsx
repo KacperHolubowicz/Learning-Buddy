@@ -11,28 +11,28 @@ function SubjectListPage() {
     let [page, setPage] = useState(1);
     let [pagination, setPagination] = useState({});
 
-    function getRequest() {
-        getSubjects(search, page)
+    async function fetchData() {
+        await getSubjects(search, page)
         .then((resp) => {
             console.log(resp);
-            setSubjects(resp?.paginatedProperty);
+            setSubjects(resp?.data?.paginatedProperty);
             setPagination({
-                page: resp?.page,
-                hasNext: resp?.hasNext,
-                hasPrev: resp?.hasPrevious,
-                totalPages: resp?.totalPages
-            });
-            //error handling, like showing error page
+                page: resp?.data?.page,
+                hasNext: resp?.data?.hasNext,
+                hasPrev: resp?.data?.hasPrevious,
+                totalPages: resp?.data?.totalPages
+            })
         })
+        .catch((error) => console.log(error));
     }
 
     useEffect(() => {
-        getRequest();
+        fetchData();
     }, [page]);
 
     return (
             <Stack gap={2} className="d-flex align-items-center">
-                <SubjectSearcher search={search} setSearch={setSearch} searchAction={() => getRequest()}/>
+                <SubjectSearcher search={search} setSearch={setSearch} searchAction={() => fetchData()}/>
                 {
                     subjects !== null ?
                     subjects.length === 0 ?
