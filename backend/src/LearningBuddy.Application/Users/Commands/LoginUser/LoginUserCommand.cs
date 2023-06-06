@@ -67,7 +67,8 @@ namespace LearningBuddy.Application.Users.Commands.LoginUser
             return new TokenResponseDTO
             {
                 AccessToken = tokenService.CreateAccessToken(PrepareClaims(user)),
-                RefreshToken = newToken.Value
+                RefreshToken = newToken.Value,
+                UserUsername = user.Username
             };
         }
     }

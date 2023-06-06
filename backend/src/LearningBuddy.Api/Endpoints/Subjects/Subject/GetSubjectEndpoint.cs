@@ -9,6 +9,7 @@ namespace LearningBuddy.Api.Endpoints.Subjects.Subject
         {
             Get(Url + "subject/{SubjectID}");
             ResponseCache(60);
+            AllowAnonymous();
         }
 
         public override async Task HandleAsync(GetSubjectQuery req, CancellationToken ct)

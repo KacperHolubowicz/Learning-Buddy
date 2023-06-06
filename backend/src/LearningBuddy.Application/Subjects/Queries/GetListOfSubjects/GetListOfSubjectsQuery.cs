@@ -34,7 +34,7 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfSubjects
                 .Include(s => s.Tags)
                 .AsNoTracking()
                 .Where(s => s.Public 
-                    && s.Name.Contains(request.Name))
+                    && s.Name.ToLower().Contains(request.Name.ToLower()))
                 .Select(s => new SubjectItemDTO()
                 {
                     ID = s.ID,

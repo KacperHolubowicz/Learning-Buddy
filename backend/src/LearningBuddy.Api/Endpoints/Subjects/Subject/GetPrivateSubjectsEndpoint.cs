@@ -8,6 +8,7 @@ namespace LearningBuddy.Api.Endpoints.Subjects.Subject
         public override void Configure()
         {
             Get(Url + "subject/private");
+            ResponseCache(60);
         }
 
         public override async Task HandleAsync(GetListOfPrivateSubjectsQuery req, CancellationToken ct)
