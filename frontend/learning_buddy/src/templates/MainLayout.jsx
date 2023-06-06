@@ -5,10 +5,10 @@ import AuthContext from "../logic/auth";
 function MainLayout() {
 
     return (
-        <AuthContext.Provider>
+        <>
             <Navbar />
             <Outlet />
-        </AuthContext.Provider>
+        </>
     )
 }
 

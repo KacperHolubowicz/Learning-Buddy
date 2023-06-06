@@ -1,9 +1,12 @@
+import { useContext } from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import useAuth from "./hooks/useAuth";
+import AuthContext from "./auth";
 
 function Authorize() {
-    const {auth} = useAuth();
+    const { auth } = useContext(AuthContext);
     const location = useLocation();
     
-    return auth.isAuthenticated ? <Outlet /> : <Navigate to="/login" state={{from: location}} replace/>
+    return auth?.username ? <Outlet /> : <Navigate to="/login" state={{from: location}} replace/>
 }
+
+export default Authorize;

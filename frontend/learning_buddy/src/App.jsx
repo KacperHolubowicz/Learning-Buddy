@@ -1,7 +1,10 @@
 import './App.css';
 import MainPage from "./pages/MainPage";
 import SubjectListPage from './pages/SubjectListPage';
+import SubjectPage from './pages/SubjectPage';
 import MainLayout from "./templates/MainLayout";
+import LoginPage from "./pages/LoginPage";
+import Authorize from "./logic/Authorize";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -17,7 +20,14 @@ function App() {
     createRoutesFromElements([
       <Route path="/" element={<MainLayout />} >
         <Route index element={<MainPage />} />
-        <Route path="subjects" element={<SubjectListPage />} />
+        <Route path="subjects" element={<SubjectListPage />}>
+          <Route path=":id" element={<SubjectPage />}>
+            <Route element={<Authorize />} >
+
+            </Route>
+          </Route>
+        </Route>
+        <Route path="login" element={<LoginPage />} />
       </Route>
     ])
   );
