@@ -11,7 +11,9 @@ namespace LearningBuddy.Api.Endpoints.Users
 
         public override async Task HandleAsync(LogoutUserCommand req, CancellationToken ct)
         {
+            req.TokenValue = HttpContext.Request.Cookies["RefreshToken"];
             await SendAsync(await Mediator.Send(req, ct));
+            HttpContext.Response.Cookies.Delete("RefreshToken");
         }
     }
 }

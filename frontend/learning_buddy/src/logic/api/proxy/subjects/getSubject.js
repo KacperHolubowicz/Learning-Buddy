@@ -1,5 +1,5 @@
-import axiosInstance from "../../axios";
+import axiosApi from "../../axios";
 
 export default async function getSubject(id) {
-    return await axiosInstance.get(`subject/${id}`);
+    return await axiosApi.get(`subject/${id}`);
 }

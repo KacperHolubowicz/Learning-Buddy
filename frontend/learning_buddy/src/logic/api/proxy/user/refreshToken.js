@@ -1,11 +1,12 @@
-import axiosInstance from "../../axios";
+import axiosAuth from "../../authAxios";
 
-export default async function refreshToken() {
-    try {
-      const resp = await axiosInstance.post('refresh-token', {});
-      return resp?.data?.accessToken;
-    } catch (err) {
-      console.error(err);
-      throw err;
-    }
+export default function refreshToken() {
+  return new Promise((resolve, reject) => {
+    return axiosAuth.post('refresh-token', JSON.stringify({}))
+    .then((response) => {
+      resolve(response)
+    }).catch((error) => {
+      reject(error)
+    })
+  })
 }

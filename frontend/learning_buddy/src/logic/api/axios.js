@@ -1,7 +1,7 @@
 import axios from "axios"
 import refreshToken from "./proxy/user/refreshToken";
 
-const axiosInstance = axios.create({
+const axiosApi = axios.create({
     baseURL: "https://localhost:7276/api/v1",
     headers: {
         'Content-Type': 'application/json'
@@ -9,7 +9,7 @@ const axiosInstance = axios.create({
     withCredentials: true
 })
 
-axiosInstance.interceptors.request.use(function (config) {
+axiosApi.interceptors.request.use(function (config) {
     const token = document.cookie
         .split("; ")
         .find((row) => row.startsWith("accessToken="))
@@ -18,21 +18,21 @@ axiosInstance.interceptors.request.use(function (config) {
     return config;
 });
 
-/*axiosInstance.interceptors.response.use(
+axiosApi.interceptors.response.use(
     (response) => response,
     (error) => {
       const originalRequest = error.config;
-      if (error.response.status === 401 && !originalRequest._retry) {
+      if ((error.response.status === 401 || error.response.status === 403) && !originalRequest._retry) {
         originalRequest._retry = true;
         return refreshToken()
             .then((accessToken) => {
-                document.cookie = `accessToken=${accessToken}; SameSite=Lax; Secure; max-age=300;`
+                document.cookie = `accessToken=${accessToken?.data?.accessToken}; SameSite=Lax; Secure; max-age=300; domain=localhost; path=/;`
                 originalRequest.headers.Authorization = `Bearer ${accessToken}`;
-                return axios(originalRequest);
+                return axiosApi(originalRequest);
             });
       }
       return Promise.reject(error);
     }
-  );*/
+  );
 
-export default axiosInstance;
+export default axiosApi;

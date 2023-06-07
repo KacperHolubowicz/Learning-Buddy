@@ -17,7 +17,7 @@ builder.Services.AddFastEndpoints();
 var corsBuilder = new CorsPolicyBuilder();
 corsBuilder.AllowAnyHeader();
 corsBuilder.AllowAnyMethod();
-corsBuilder.WithOrigins("http://localhost:3000");
+corsBuilder.WithOrigins("https://localhost:3000", "http://localhost:3000");
 corsBuilder.AllowCredentials();
 builder.Services.AddCors(options =>
 {

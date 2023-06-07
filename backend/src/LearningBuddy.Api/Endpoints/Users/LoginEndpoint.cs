@@ -1,5 +1,4 @@
-﻿using LearningBuddy.Api.Endpoints.Processors;
-using LearningBuddy.Application.Users.Commands.LoginUser;
+﻿using LearningBuddy.Application.Users.Commands.LoginUser;
 
 namespace LearningBuddy.Api.Endpoints.Users
 {
@@ -19,7 +18,8 @@ namespace LearningBuddy.Api.Endpoints.Users
                 Expires = res.ExpirationDate,
                 HttpOnly = true,
                 SameSite = SameSiteMode.Lax,
-                Secure = true
+                Secure = true,
+                Domain = "localhost"
             });
             await SendAsync(res);
         }

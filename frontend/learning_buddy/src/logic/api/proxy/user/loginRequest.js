@@ -1,5 +1,5 @@
-import axiosInstance from "../../axios";
+import axiosAuth from "../../authAxios";
 
 export default async function loginRequest(login, password) {
-    return await axiosInstance.post('login', JSON.stringify({login, password}));
+    return await axiosAuth.post('login', JSON.stringify({login, password}));
 }
