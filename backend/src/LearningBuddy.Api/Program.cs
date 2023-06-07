@@ -68,7 +68,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseDefaultExceptionHandler();
+app.UseModifiedExceptionHandler();
 app.UseAuthorization();
 app.UseFastEndpoints();
 app.UseCors("ReactPolicy");

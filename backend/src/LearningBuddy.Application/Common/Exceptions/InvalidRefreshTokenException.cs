@@ -5,5 +5,9 @@
         public InvalidRefreshTokenException() : base("This refresh token has expired or is invalid")
         {
         }
+
+        public InvalidRefreshTokenException(string message) : base(message)
+        {
+        }
     }
 }
