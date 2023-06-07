@@ -15,7 +15,7 @@ function Navbar() {
                     <Col xs={2}>
                         <NavbarItem text="All subjects" action={() => navigate("/subjects")}/>
                     </Col>
-                    { auth?.username !== undefined ?
+                    { auth?.username !== null ?
                     <>
                         <Col xs={2}>
                             <NavbarItem text="Your subjects" action={() => navigate("/private-subjects")}/>

@@ -1,5 +1,5 @@
-import axios from "../../axios";
+import axiosInstance from "../../axios";
 
 export default async function getSubjects(nameQuery, page) {
-    return await axios.get(`subject?name=${nameQuery}&pageNumber=${page}`)
+    return await axiosInstance.get(`subject?name=${nameQuery}&pageNumber=${page}`)
 }

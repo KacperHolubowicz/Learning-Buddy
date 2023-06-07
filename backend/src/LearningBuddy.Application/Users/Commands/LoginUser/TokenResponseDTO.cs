@@ -5,5 +5,6 @@
         public string AccessToken { get; set; }
         public string RefreshToken { get; set; }
         public string UserUsername { get; set; }
+        public DateTimeOffset ExpirationDate { get; set; }
     }
 }

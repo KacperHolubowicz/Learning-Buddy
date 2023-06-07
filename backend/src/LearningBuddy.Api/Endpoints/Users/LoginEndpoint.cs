@@ -1,4 +1,5 @@
-﻿using LearningBuddy.Application.Users.Commands.LoginUser;
+﻿using LearningBuddy.Api.Endpoints.Processors;
+using LearningBuddy.Application.Users.Commands.LoginUser;
 
 namespace LearningBuddy.Api.Endpoints.Users
 {
@@ -12,7 +13,15 @@ namespace LearningBuddy.Api.Endpoints.Users
 
         public override async Task HandleAsync(LoginUserCommand req, CancellationToken ct)
         {
-            await SendAsync(await Mediator.Send(req, ct));
+            TokenResponseDTO res = await Mediator.Send(req, ct);
+            HttpContext.Response.Cookies.Append("RefreshToken", res.RefreshToken, new CookieOptions()
+            {
+                Expires = res.ExpirationDate,
+                HttpOnly = true,
+                SameSite = SameSiteMode.Lax,
+                Secure = true
+            });
+            await SendAsync(res);
         }
     }
 }

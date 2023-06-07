@@ -68,6 +68,7 @@ namespace LearningBuddy.Application.Users.Commands.LoginUser
             {
                 AccessToken = tokenService.CreateAccessToken(PrepareClaims(user)),
                 RefreshToken = newToken.Value,
+                ExpirationDate = newToken.ExpirationTime,
                 UserUsername = user.Username
             };
         }

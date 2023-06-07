@@ -14,8 +14,8 @@ namespace LearningBuddy.Api.Endpoints.Users
 
         public override async Task HandleAsync(RefreshTokenCommand req, CancellationToken ct)
         {
-            StringValues refresh;
-            if(!HttpContext.Request.Headers.TryGetValue("RefreshToken", out refresh))
+            string refresh;
+            if(!HttpContext.Request.Cookies.TryGetValue("RefreshToken", out refresh))
             {
                 throw new InvalidRefreshTokenException("No refresh token was provided in headers. Consider signing in again.");
             }

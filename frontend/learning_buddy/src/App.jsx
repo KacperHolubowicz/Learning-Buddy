@@ -5,12 +5,14 @@ import SubjectPage from './pages/SubjectPage';
 import MainLayout from "./templates/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import Authorize from "./logic/Authorize";
+
 import {
   createBrowserRouter,
   RouterProvider,
   Route,
   createRoutesFromElements,
 } from "react-router-dom";
+import NotFoundPage from './pages/NotFoundPage';
 
 function App() {
 
@@ -23,6 +25,7 @@ function App() {
         <Route path="subjects" element={<SubjectListPage />} />
         <Route path="subjects/:id" element={<SubjectPage />} />
         <Route path="login" element={<LoginPage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Route>
     ])
   );

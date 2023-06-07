@@ -1,5 +1,5 @@
-import axios from "../../axios";
+import axiosInstance from "../../axios";
 
 export default async function getSubject(id) {
-    return await axios.get(`subject/${id}`);
+    return await axiosInstance.get(`subject/${id}`);
 }

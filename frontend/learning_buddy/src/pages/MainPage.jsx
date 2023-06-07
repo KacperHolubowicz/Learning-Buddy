@@ -6,7 +6,7 @@ function MainPage() {
     return (
         <Stack gap={5} className="col-12 mx-auto">
             {
-            auth?.username === undefined ?
+            auth?.username === null ?
                 <>
                     <div>
                         <span />

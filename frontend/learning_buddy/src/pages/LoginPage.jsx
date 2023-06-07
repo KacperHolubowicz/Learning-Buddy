@@ -11,7 +11,7 @@ function LoginPage() {
     let [login, setLogin] = useState("");
     let [password, setPassword] = useState("");
     let [error, setError] = useState(false);
-    const {setAuth } = useAuth();
+    const { setAuth } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
     const from = location.state?.from?.pathname || "/";
@@ -19,6 +19,8 @@ function LoginPage() {
     async function loginHandle() {
         await loginRequest(login, password, setError)
             .then((resp) => {
+                window.localStorage.setItem("username", resp?.data?.userUsername);
+                document.cookie = `accessToken=${resp?.data?.accessToken}; SameSite=Lax; Secure; max-age=300;`
                 setAuth({
                     username: resp?.data?.userUsername,
                     accessToken: resp?.data?.accessToken
