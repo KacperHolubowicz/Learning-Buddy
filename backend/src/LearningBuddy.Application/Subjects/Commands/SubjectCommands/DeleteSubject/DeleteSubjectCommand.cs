@@ -29,7 +29,7 @@ namespace LearningBuddy.Application.Subjects.Commands.SubjectCommands.DeleteSubj
 
             if (subjectToDelete == null)
             {
-                throw new ResourceNotFoundException("Subject", request.SubjectID);
+                return false;
             }
             context.Subjects.Remove(subjectToDelete);
             await context.SaveChangesAsync(cancellationToken);

@@ -41,46 +41,49 @@ namespace LearningBuddy.Application.Quizzes.Commands.QuizCommands.UpdateQuiz
 
         public async Task<bool> Handle(UpdateQuizCommand request, CancellationToken cancellationToken)
         {
+            Quiz quizToUpdate = await FindQuiz(request);
+            UpdateQuiz(request, ref quizToUpdate);
+            await qContext.SaveChangesAsync(cancellationToken);
+            return true;
+        }
+
+        private async Task<Quiz> FindQuiz(UpdateQuizCommand request)
+        {
             Quiz quizToUpdate = await qContext.Quizzes
                 .Include(q => q.User)
                 .Include(q => q.Questions)
                 .ThenInclude(qu => qu.Answers)
-                .FirstOrDefaultAsync(q => q.ID == request.QuizID && q.User.ID == request.UserID);
+                .FirstOrDefaultAsync(q => q.ID == request.QuizID);
 
-            try
+            if (quizToUpdate == null)
             {
-                UpdateQuiz(request, quizToUpdate);
-                quizToUpdate.MaxPoints = (short)quizToUpdate.Questions.Sum(q => q.Points);
-                await qContext.SaveChangesAsync(cancellationToken);
-                return true;
-            } catch(ResourceNotFoundException)
-            {
-                return false;
-            } catch(Exception)
-            {
-                throw;
+                throw new ResourceNotFoundException("Quiz", request.QuizID);
             }
+            else if (quizToUpdate.User.ID != request.UserID)
+            {
+                throw new UnauthorizedResourceAccessException("Quiz", request.QuizID);
+            }
+            return quizToUpdate;
         }
 
-        private void UpdateQuiz(UpdateQuizCommand quizCommand, Quiz quiz)
+        private void UpdateQuiz(UpdateQuizCommand quizCommand, ref Quiz quiz)
         {
-            if(quiz == null)
-            {
-                throw new ResourceNotFoundException("Quiz", quizCommand.QuizID);
-            }
             quiz.Description = !string.IsNullOrEmpty(quizCommand.Description) 
                 ? quizCommand.Description : quiz.Description;
             quiz.Name = !string.IsNullOrEmpty(quizCommand.Name) 
                 ? quizCommand.Name : quiz.Name;
+            short maxPoints = 0;
             foreach(QuestionUpdateCommand question in quizCommand.Questions)
             {
                 Question questionToUpdate = quiz.Questions
                     .FirstOrDefault(q => q.ID == question.ID);
-                UpdateQuestion(question, questionToUpdate);
+                UpdateQuestion(question, ref questionToUpdate);
+                maxPoints += questionToUpdate.Points;
             }
+            quiz.MaxPoints = maxPoints;
         }
 
-        private void UpdateQuestion(QuestionUpdateCommand questionCommand, Question question)
+        private void UpdateQuestion(QuestionUpdateCommand questionCommand, ref Question question)
         {
             if (question == null)
             {
@@ -94,11 +97,11 @@ namespace LearningBuddy.Application.Quizzes.Commands.QuizCommands.UpdateQuiz
             {
                 Answer answerToUpdate = question.Answers
                     .FirstOrDefault(a => a.ID == answer.ID);
-                UpdateAnswer(answer, answerToUpdate);
+                UpdateAnswer(answer, ref answerToUpdate);
             }
         }
 
-        private void UpdateAnswer(AnswerUpdateCommand answerCommand, Answer answer)
+        private void UpdateAnswer(AnswerUpdateCommand answerCommand, ref Answer answer)
         {
             if (answer == null)
             {

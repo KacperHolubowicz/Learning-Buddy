@@ -77,9 +77,12 @@ namespace LearningBuddy.Application.Quizzes.Commands.QuizCommands.CreateQuiz
             Subject sub = await sContext.Subjects
                 .Include(s => s.Creator)
                 .FirstOrDefaultAsync(s => s.ID == quiz.SubjectID);
-            if(sub == null || (!sub.Public && sub.Creator.ID != quiz.UserID))
+            if(sub == null)
             {
                 throw new ResourceNotFoundException("Subject", quiz.SubjectID);
+            } else if(!sub.Public && sub.Creator.ID != quiz.UserID)
+            {
+                throw new UnauthorizedResourceAccessException("Subject", quiz.SubjectID);
             }
 
             User user = await uContext.Users

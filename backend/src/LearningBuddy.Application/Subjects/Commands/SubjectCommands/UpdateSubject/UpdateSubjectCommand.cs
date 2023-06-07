@@ -2,6 +2,7 @@
 using LearningBuddy.Application.Common.Interfaces.Messaging;
 using LearningBuddy.Application.Common.Interfaces.Persistence;
 using LearningBuddy.Domain.Subjects.Entities;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Subjects.Commands.SubjectCommands.UpdateSubject
@@ -29,14 +30,12 @@ namespace LearningBuddy.Application.Subjects.Commands.SubjectCommands.UpdateSubj
 
         public async Task<bool> Handle(UpdateSubjectCommand request, CancellationToken cancellationToken)
         {
-            Subject? subjectToEdit = await context.Subjects
-                .FirstOrDefaultAsync(s => s.ID == request.SubjectID
-                    && s.Creator.ID == request.UserID);
-            if (subjectToEdit == null)
-            {
-                throw new ResourceNotFoundException("Subject", request.SubjectID);
-            }
-            else if (subjectToEdit.Finished)
+            Subject subjectToEdit = await context.Subjects
+                .Include(s => s.Creator)
+                .FirstOrDefaultAsync(s => s.ID == request.SubjectID);
+
+            CheckAccessToSubject(request.UserID, subjectToEdit);
+            if (subjectToEdit.Finished)
             {
                 return false;
             }
@@ -45,6 +44,18 @@ namespace LearningBuddy.Application.Subjects.Commands.SubjectCommands.UpdateSubj
             context.Subjects.Update(subjectToEdit);
             await context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+        private void CheckAccessToSubject(long userId, Subject subject)
+        {
+            if(subject == null)
+            {
+                throw new ResourceNotFoundException("Subject", subject.ID);
+            }
+            else if(subject.Creator.ID != userId)
+            {
+                throw new UnauthorizedResourceAccessException("Subject", subject.ID);
+            }
         }
 
         private async Task UpdateSubject(UpdateSubjectCommand request, Subject subjectToEdit)

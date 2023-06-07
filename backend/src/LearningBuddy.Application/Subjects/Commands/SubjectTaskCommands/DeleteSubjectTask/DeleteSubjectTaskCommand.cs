@@ -30,7 +30,7 @@ namespace LearningBuddy.Application.Subjects.Commands.SubjectTaskCommands.Delete
 
             if (subjectTaskToDelete == null)
             {
-                throw new ResourceNotFoundException("SubjectTask", request.SubjectTaskID);
+                return false;
             }
             context.Tasks.Remove(subjectTaskToDelete);
             await context.SaveChangesAsync(cancellationToken);

@@ -39,7 +39,7 @@ namespace LearningBuddy.Application.Users.Commands.Favourites
             }
             if(!await HasAccess(request))
             {
-                throw new ResourceNotFoundException(request.ObjectType.ToString(), request.ObjectID);
+                throw new UnauthorizedResourceAccessException(request.ObjectType.ToString(), request.ObjectID);
             }
             if(await AlreadyFavourite(request))
             {

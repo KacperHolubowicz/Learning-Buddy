@@ -2,7 +2,7 @@
 using LearningBuddy.Application.Common.Exceptions;
 using LearningBuddy.Application.Common.Interfaces.Messaging;
 using LearningBuddy.Application.Common.Interfaces.Persistence;
-using LearningBuddy.Domain.Subjects.Entities;
+using LearningBuddy.Domain.Quizzes.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Quizzes.Queries.GetListOfQuestions
@@ -26,31 +26,30 @@ namespace LearningBuddy.Application.Quizzes.Queries.GetListOfQuestions
         }
         public async Task<IList<QuestionItemDTO>> Handle(GetListOfQuestionsQuery request, CancellationToken cancellationToken)
         {
-            if(await CheckUsersAccessToSubject(request.UserID, request.QuizID))
-            {
-                return await qContext.Questions
-                    .Include(q => q.Quiz)
-                    .Include(q => q.Answers)
-                    .Where(q => q.Quiz.ID == request.QuizID)
-                    .Select(q => mapper.Map<QuestionItemDTO>(q))
-                    .ToListAsync(cancellationToken);
-            }
-            throw new ResourceNotFoundException("Quiz", request.QuizID);
+            await CheckUsersAccessToSubject(request.UserID, request.QuizID);
+            return await qContext.Questions
+                .Include(q => q.Quiz)
+                .Include(q => q.Answers)
+                .Where(q => q.Quiz.ID == request.QuizID)
+                .Select(q => mapper.Map<QuestionItemDTO>(q))
+                .ToListAsync(cancellationToken);
         }
 
-        private async Task<bool> CheckUsersAccessToSubject(long? userID, long quizID)
+        private async Task CheckUsersAccessToSubject(long? userID, long quizID)
         {
-            Subject sub = (await qContext.Quizzes
+            Quiz quiz = await qContext.Quizzes
                 .Include(q => q.Subject)
                 .ThenInclude(s => s.Creator)
-                .FirstOrDefaultAsync(q => q.ID == quizID))
-                .Subject;
+                .FirstOrDefaultAsync(q => q.ID == quizID);
 
-            if (sub != null && (sub.Public || userID.HasValue && sub.Creator.ID == userID))
+            if(quiz == null)
             {
-                return true;
+                throw new ResourceNotFoundException("Quiz", quizID);
             }
-            return false;
+            else if(!quiz.Subject.Public && quiz.Subject.Creator.ID != userID)
+            {
+                throw new UnauthorizedResourceAccessException("Quiz", quizID);
+            }
         }
     }
 }

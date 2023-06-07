@@ -3,6 +3,7 @@ using LearningBuddy.Application.Common.Interfaces.Messaging;
 using LearningBuddy.Application.Common.Interfaces.Persistence;
 using LearningBuddy.Domain.Subjects.Entities;
 using LearningBuddy.Domain.Users.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Subjects.Commands.SubjectTaskCommands.CreateSubjectTask
 {
@@ -41,16 +42,9 @@ namespace LearningBuddy.Application.Subjects.Commands.SubjectTaskCommands.Create
             User creator = await userContext.Users
                 .FindAsync(command.UserID);
             Subject subject = await subjectContext.Subjects
-                .FindAsync(command.SubjectID);
-
-            if (creator == null)
-            {
-                throw new ResourceNotFoundException("User", command.UserID);
-            } else if(subject == null)
-            {
-                throw new ResourceNotFoundException("Subject", command.SubjectID);
-            }
-
+                .Include(s => s.Creator)
+                .FirstOrDefaultAsync(s => s.ID == command.SubjectID);
+            CheckAccessToSubject(command, creator, subject);
             return new SubjectTask()
             {
                 Name = command.Name,
@@ -63,6 +57,22 @@ namespace LearningBuddy.Application.Subjects.Commands.SubjectTaskCommands.Create
                 Priority = command.Priority,
                 Subject = subject
             };
+        }
+
+        private void CheckAccessToSubject(CreateSubjectTaskCommand req, User user, Subject subject)
+        {
+            if(subject == null)
+            {
+                throw new ResourceNotFoundException("Subject", req.SubjectID);
+            } 
+            else if(user == null)
+            {
+                throw new ResourceNotFoundException("User", req.UserID);
+            }
+            else if(!subject.Public && subject.Creator.ID != user.ID)
+            {
+                throw new UnauthorizedResourceAccessException("Subject", subject.ID);
+            }
         }
     }
 }

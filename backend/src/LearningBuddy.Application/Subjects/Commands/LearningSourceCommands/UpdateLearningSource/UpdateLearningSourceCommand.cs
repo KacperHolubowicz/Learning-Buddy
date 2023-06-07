@@ -3,6 +3,7 @@ using LearningBuddy.Application.Common.Interfaces.Messaging;
 using LearningBuddy.Application.Common.Interfaces.Persistence;
 using LearningBuddy.Domain.Subjects.Entities;
 using LearningBuddy.Domain.Subjects.Enums;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Subjects.Commands.LearningSourceCommands.UpdateLearningSource
@@ -29,17 +30,26 @@ namespace LearningBuddy.Application.Subjects.Commands.LearningSourceCommands.Upd
         public async Task<bool> Handle(UpdateLearningSourceCommand request, CancellationToken cancellationToken)
         {
             LearningSource sourceToEdit = await context.Sources
-                .FirstOrDefaultAsync(s => s.ID == request.SourceID
-                    && s.User.ID == request.UserID);
-            if (sourceToEdit == null)
-            {
-                throw new ResourceNotFoundException("Subject", request.SourceID);
-            }
+                .Include(ls => ls.User)
+                .FirstOrDefaultAsync(s => s.ID == request.SourceID);
 
+            CheckAccessToSource(request, sourceToEdit);
             UpdateSource(request, sourceToEdit);
             context.Sources.Update(sourceToEdit);
             await context.SaveChangesAsync(cancellationToken);
             return true;
+        }
+
+        public void CheckAccessToSource(UpdateLearningSourceCommand req, LearningSource source)
+        {
+            if (source == null)
+            {
+                throw new ResourceNotFoundException("Learning source", req.SourceID);
+            } 
+            else if(source.User.ID != req.UserID)
+            {
+                throw new UnauthorizedResourceAccessException("Learning source", req.SourceID);
+            }
         }
 
         private void UpdateSource(UpdateLearningSourceCommand request, LearningSource sourceToEdit)

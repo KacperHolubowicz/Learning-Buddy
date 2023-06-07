@@ -4,6 +4,7 @@ using LearningBuddy.Application.Common.Interfaces.Persistence;
 using LearningBuddy.Domain.Subjects.Entities;
 using LearningBuddy.Domain.Subjects.Enums;
 using LearningBuddy.Domain.Users.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Subjects.Commands.LearningSourceCommands.CreateLearningSource
 {
@@ -41,14 +42,20 @@ namespace LearningBuddy.Application.Subjects.Commands.LearningSourceCommands.Cre
             User creator = await userContext.Users
                 .FindAsync(command.UserID);
             Subject subject = await subjectContext.Subjects
-                .FindAsync(command.SubjectID);
+                .Include(s => s.Creator)
+                .FirstOrDefaultAsync(s => s.ID == command.SubjectID);
 
             if (creator == null)
             {
                 throw new ResourceNotFoundException("User", command.UserID);
-            } else if(subject == null)
+            } 
+            else if(subject == null)
             {
                 throw new ResourceNotFoundException("Subject", command.SubjectID);
+            }
+            else if(!subject.Public && subject.Creator.ID != command.UserID)
+            {
+                throw new UnauthorizedResourceAccessException("Subject", command.SubjectID);
             }
 
             return new LearningSource()

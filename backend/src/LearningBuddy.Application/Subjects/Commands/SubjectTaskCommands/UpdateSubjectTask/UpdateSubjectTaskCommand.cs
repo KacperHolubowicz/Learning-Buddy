@@ -31,11 +31,16 @@ namespace LearningBuddy.Application.Subjects.Commands.SubjectTaskCommands.Update
         {
 
             SubjectTask subjectTaskToEdit = await context.Tasks
-                .FirstOrDefaultAsync(s => s.ID == request.SubjectTaskID
-                    && s.User.ID == request.UserID);
+                .Include(t => t.User)
+                .FirstOrDefaultAsync(s => s.ID == request.SubjectTaskID);
+
             if (subjectTaskToEdit == null)
             {
                 throw new ResourceNotFoundException("SubjectTask", request.SubjectTaskID);
+            } 
+            else if(subjectTaskToEdit.User.ID != request.UserID)
+            {
+                throw new UnauthorizedResourceAccessException("SubjecTask", request.SubjectTaskID);
             }
             else if (subjectTaskToEdit.Finished)
             {

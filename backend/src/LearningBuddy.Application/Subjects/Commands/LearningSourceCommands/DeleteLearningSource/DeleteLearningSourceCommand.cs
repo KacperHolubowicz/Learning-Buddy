@@ -24,11 +24,10 @@ namespace LearningBuddy.Application.Subjects.Commands.LearningSourceCommands.Del
         public async Task<bool> Handle(DeleteLearningSourceCommand request, CancellationToken cancellationToken)
         {
             LearningSource sourceToDelete = await context.Sources
-                .FirstOrDefaultAsync(s => s.ID == request.SourceID
-                    && s.User.ID == request.UserID);
+                .FirstOrDefaultAsync(s => s.ID == request.SourceID && s.User.ID == request.UserID);
             if(sourceToDelete == null)
             {
-                throw new ResourceNotFoundException("LearningSource", request.SourceID);
+                return false;
             }
             context.Sources.Remove(sourceToDelete);
             await context.SaveChangesAsync(cancellationToken);

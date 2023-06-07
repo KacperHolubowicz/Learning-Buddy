@@ -1,8 +1,9 @@
-﻿using AutoMapper;
-using LearningBuddy.Application.Common;
+﻿using LearningBuddy.Application.Common;
+using LearningBuddy.Application.Common.Exceptions;
 using LearningBuddy.Application.Common.Extensions;
 using LearningBuddy.Application.Common.Interfaces.Messaging;
 using LearningBuddy.Application.Common.Interfaces.Persistence;
+using LearningBuddy.Domain.Subjects.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Subjects.Queries.GetListOfLearningSources
@@ -18,17 +19,16 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfLearningSources
     public class GetListOfLearningSourcesHandler : IQueryHandler<GetListOfLearningSourcesQuery, 
         PaginatedList<LearningSourceDTO>>
     {
-        private readonly IMapper mapper;
         private readonly ISubjectsDbContext context;
 
-        public GetListOfLearningSourcesHandler(IMapper mapper, ISubjectsDbContext context)
+        public GetListOfLearningSourcesHandler(ISubjectsDbContext context)
         {
-            this.mapper = mapper;
             this.context = context;
         }
 
         public async Task<PaginatedList<LearningSourceDTO>> Handle(GetListOfLearningSourcesQuery request, CancellationToken cancellationToken)
         {
+            await CheckAccess(request);
             return await context.Sources
                 .Include(s => s.User)
                 .AsNoTracking()
@@ -41,6 +41,23 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfLearningSources
                     IsOwner = s.User.ID == request.UserID
                 })
                 .PaginatedListAsync(request.PageNumber, request.PageSize);
+        }
+
+        private async Task CheckAccess(GetListOfLearningSourcesQuery req)
+        {
+            Subject sub = await context.Subjects
+                .AsNoTracking()
+                .Include(s => s.Creator)
+                .FirstOrDefaultAsync(s => s.ID == req.SubjectID);
+
+            if (sub == null)
+            {
+                throw new ResourceNotFoundException("Subject", req.SubjectID);
+            }
+            else if (!sub.Public && sub.Creator.ID != req.UserID)
+            {
+                throw new UnauthorizedResourceAccessException("Subject", req.SubjectID);
+            }
         }
     }
 }

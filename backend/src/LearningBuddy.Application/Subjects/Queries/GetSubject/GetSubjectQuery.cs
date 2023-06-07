@@ -25,18 +25,21 @@ namespace LearningBuddy.Application.Subjects.Queries.GetSubject
 
         public async Task<SubjectDTO> Handle(GetSubjectQuery request, CancellationToken cancellationToken)
         {
-            var entity = await context.Subjects
+            var subject = await context.Subjects
                 .Include(s => s.Creator)
                 .AsNoTracking()
-                .FirstOrDefaultAsync(s => s.ID == request.SubjectID
-                    && ((request.UserID.HasValue && s.Creator.ID == request.UserID) || s.Public == true));
+                .FirstOrDefaultAsync(s => s.ID == request.SubjectID);
 
-            if(entity == null)
+            if(subject == null)
             {
                 throw new ResourceNotFoundException("Subject", request.SubjectID);
             }
-            var subjectDto = mapper.Map<SubjectDTO>(entity);
-            subjectDto.IsOwner = entity.Creator.ID == request.UserID;
+            else if(!subject.Public && subject.Creator.ID != request.UserID)
+            {
+                throw new UnauthorizedResourceAccessException("Subject", request.SubjectID);
+            } 
+            var subjectDto = mapper.Map<SubjectDTO>(subject);
+            subjectDto.IsOwner = subject.Creator.ID == request.UserID;
             return subjectDto;
         }
     }

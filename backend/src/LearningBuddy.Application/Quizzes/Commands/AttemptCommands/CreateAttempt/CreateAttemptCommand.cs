@@ -39,14 +39,9 @@ namespace LearningBuddy.Application.Quizzes.Commands.AttemptCommands.CreateAttem
                 .Include(q => q.Questions)
                 .ThenInclude(qu => qu.Answers)
                 .FirstOrDefaultAsync(q => q.ID == request.QuizID);
-
-            if (!await CheckUsersAccessToSubject(request.UserID, request.QuizID) || solvedQuiz == null)
-            {
-                throw new ResourceNotFoundException("Quiz", request.QuizID);
-            }
+            await CheckUsersAccessToSubject(request.UserID, request.QuizID);
 
             AttemptCreateResponseDTO attemptResp = CreateAttemptResponse(request, solvedQuiz);
-
             if(request.UserID != null && request.UserID != 0)
             {
                 Attempt newAttempt = await AttemptResponseToEntity(request, solvedQuiz, attemptResp);
@@ -71,7 +66,8 @@ namespace LearningBuddy.Application.Quizzes.Commands.AttemptCommands.CreateAttem
         private async Task<Attempt> AttemptResponseToEntity(CreateAttemptCommand attempt, 
             Quiz quiz, AttemptCreateResponseDTO resp)
         {
-            User user = await uContext.Users.FindAsync(attempt.UserID);
+            User user = await uContext.Users
+                .FindAsync(attempt.UserID);
             if(user == null)
             {
                 throw new ResourceNotFoundException("User", attempt.UserID.Value);
@@ -101,12 +97,14 @@ namespace LearningBuddy.Application.Quizzes.Commands.AttemptCommands.CreateAttem
             short points = 0;
             foreach(AttemptAnswerCommand answer in attempt.Answers)
             {
-                Question question = quiz.Questions.FirstOrDefault(q => q.ID == answer.QuestionID);
+                Question question = quiz.Questions
+                    .FirstOrDefault(q => q.ID == answer.QuestionID);
                 if (question == null)
                 {
                     throw new ResourceNotFoundException("Question", answer.QuestionID);
                 }
-                Answer ans = question.Answers.FirstOrDefault(a => a.ID == answer.AnswerID);
+                Answer ans = question.Answers
+                    .FirstOrDefault(a => a.ID == answer.AnswerID);
                 if(ans == null)
                 {
                     throw new ResourceNotFoundException("Answer", answer.AnswerID);
@@ -119,19 +117,19 @@ namespace LearningBuddy.Application.Quizzes.Commands.AttemptCommands.CreateAttem
             return points;
         }
 
-        private async Task<bool> CheckUsersAccessToSubject(long? userID, long quizID)
+        private async Task CheckUsersAccessToSubject(long? userID, long quizID)
         {
-            Subject sub = (await qContext.Quizzes
+            Quiz quiz = (await qContext.Quizzes
                 .Include(q => q.Subject)
                 .ThenInclude(s => s.Creator)
-                .FirstOrDefaultAsync(q => q.ID == quizID))
-                .Subject;
-
-            if (sub != null && (sub.Public || userID.HasValue && sub.Creator.ID == userID))
+                .FirstOrDefaultAsync(q => q.ID == quizID));
+            if(quiz == null)
             {
-                return true;
+                throw new ResourceNotFoundException("Quiz", quizID);
+            } else if (quiz.Subject == null || (!quiz.Subject.Public && (!userID.HasValue || quiz.Subject.Creator.ID != userID)))
+            {
+                throw new UnauthorizedResourceAccessException("Quiz", quizID);
             }
-            return false;
         }
     }
 }

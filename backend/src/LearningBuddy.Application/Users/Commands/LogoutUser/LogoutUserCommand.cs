@@ -1,6 +1,5 @@
 ﻿using LearningBuddy.Application.Common.Interfaces.Messaging;
 using LearningBuddy.Application.Common.Interfaces.Persistence;
-using LearningBuddy.Domain.Users.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace LearningBuddy.Application.Users.Commands.LogoutUser

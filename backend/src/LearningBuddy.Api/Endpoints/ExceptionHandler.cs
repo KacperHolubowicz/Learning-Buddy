@@ -66,6 +66,10 @@ REASON: {error}
                             status = "Not unique property";
                             statusCode = (int)HttpStatusCode.BadRequest;
                             break;
+                        case UnauthorizedResourceAccessException urae:
+                            status = "Unauthorized access to resource";
+                            statusCode = (int)HttpStatusCode.Forbidden;
+                            break;
                     }
 
                     ctx.Response.StatusCode = statusCode;

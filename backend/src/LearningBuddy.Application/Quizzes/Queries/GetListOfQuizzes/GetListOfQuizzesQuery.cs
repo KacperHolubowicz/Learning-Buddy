@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using LearningBuddy.Application.Common;
+﻿using LearningBuddy.Application.Common;
 using LearningBuddy.Application.Common.Exceptions;
 using LearningBuddy.Application.Common.Extensions;
 using LearningBuddy.Application.Common.Interfaces.Messaging;
@@ -20,53 +19,50 @@ namespace LearningBuddy.Application.Quizzes.Queries.GetListOfQuizzes
     public class GetListOfQuizzesQueryHandler : IQueryHandler
         <GetListOfQuizzesQuery, PaginatedList<QuizItemDTO>>
     {
-        private readonly IMapper mapper;
         private readonly ISubjectsDbContext subContext;
         private readonly IQuizzesDbContext qContext;
 
-        public GetListOfQuizzesQueryHandler(IMapper mapper, ISubjectsDbContext subContext,
-            IQuizzesDbContext qContext)
+        public GetListOfQuizzesQueryHandler(ISubjectsDbContext subContext, IQuizzesDbContext qContext)
         {
-            this.mapper = mapper;
             this.subContext = subContext;
             this.qContext = qContext;
         }
         public async Task<PaginatedList<QuizItemDTO>> Handle(GetListOfQuizzesQuery request, CancellationToken cancellationToken)
         {
-            if(await CheckUsersAccessToSubject(request.UserID, request.SubjectID))
-            {
-                return await qContext.Quizzes
-                    .Include(q => q.User)
-                    .Include(q => q.Subject)
-                    .Include(q => q.Questions)
-                    .AsNoTracking()
-                    .Where(q => q.Subject.ID == request.SubjectID)
-                    .Select(q => new QuizItemDTO()
-                    {
-                        ID = q.ID,
-                        IsOwner = q.User.ID == request.UserID,
-                        ModifiedAt = q.ModifiedAt,
-                        Name = q.Name,
-                        QuestionCount = (short)q.Questions.Count,
-                        SubjectName = q.Subject.Name,
-                        UserUsername = q.User.Username
-                    })
-                    .PaginatedListAsync(request.PageNumber, request.PageSize);
-            }
-            throw new ResourceNotFoundException("Subject", request.SubjectID);
+            await CheckUsersAccessToSubject(request.UserID, request.SubjectID);
+            return await qContext.Quizzes
+                .Include(q => q.User)
+                .Include(q => q.Subject)
+                .Include(q => q.Questions)
+                .AsNoTracking()
+                .Where(q => q.Subject.ID == request.SubjectID)
+                .Select(q => new QuizItemDTO()
+                {
+                    ID = q.ID,
+                    IsOwner = q.User.ID == request.UserID,
+                    ModifiedAt = q.ModifiedAt,
+                    Name = q.Name,
+                    QuestionCount = (short)q.Questions.Count,
+                    SubjectName = q.Subject.Name,
+                    UserUsername = q.User.Username
+                })
+                .PaginatedListAsync(request.PageNumber, request.PageSize);
         }
 
-        private async Task<bool> CheckUsersAccessToSubject(long? userID, long subjectID)
+        private async Task CheckUsersAccessToSubject(long? userID, long subjectID)
         {
             Subject sub = await subContext.Subjects
                 .Include(s => s.Creator)
                 .FirstOrDefaultAsync(s => s.ID == subjectID);
 
-            if (sub != null && (sub.Public || userID.HasValue && sub.Creator.ID == userID))
+            if(sub == null)
             {
-                return true;
+                throw new ResourceNotFoundException("Subject", subjectID);
             }
-            return false;
+            else if(!sub.Public && sub.Creator.ID != userID)
+            {
+                throw new UnauthorizedResourceAccessException("Subject", subjectID);
+            }
         }
     }
 }
