@@ -12,10 +12,6 @@ namespace LearningBuddy.Api.Endpoints.Users
         public override async Task HandleAsync(GetUserProfileQuery req, CancellationToken ct)
         {
             int userId = GetUserFromAuth();
-            if(userId == 0)
-            {
-                await SendUnauthorizedAsync(ct);
-            }
             req.UserID = userId;
             await SendAsync(await Mediator.Send(req, ct));
         }

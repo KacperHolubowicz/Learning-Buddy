@@ -2,7 +2,7 @@
 
 namespace LearningBuddy.Api.Endpoints.Users
 {
-    public class LogoutEndpoint : BaseEndpoint<LogoutUserCommand>
+    public class LogoutEndpoint : BaseEndpoint<LogoutUserCommand, bool>
     {
         public override void Configure()
         {

@@ -13,10 +13,6 @@ namespace LearningBuddy.Api.Endpoints.Quizzes.Attempt
         public override async Task HandleAsync(GetAttemptQuery req, CancellationToken ct)
         {
             int userId = GetUserFromAuth();
-            if (userId == 0)
-            {
-                await SendUnauthorizedAsync(ct);
-            }
             req.UserID = userId;
             await SendAsync(await Mediator.Send(req, ct));
         }

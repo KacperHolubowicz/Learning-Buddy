@@ -2,7 +2,7 @@
 
 namespace LearningBuddy.Api.Endpoints.Users
 {
-    public class AddToFavouritesEndpoint : BaseEndpoint<AddToFavouritesCommand>
+    public class AddToFavouritesEndpoint : BaseEndpoint<AddToFavouritesCommand, bool>
     {
         public override void Configure()
         {
@@ -12,10 +12,6 @@ namespace LearningBuddy.Api.Endpoints.Users
         public override async Task HandleAsync(AddToFavouritesCommand req, CancellationToken ct)
         {
             int userId = GetUserFromAuth();
-            if (userId == 0)
-            {
-                await SendUnauthorizedAsync(ct);
-            }
             req.UserID = userId;
             await SendAsync(await Mediator.Send(req, ct));
         }

@@ -2,7 +2,7 @@
 
 namespace LearningBuddy.Api.Endpoints.Subjects.SubjectTask
 {
-    public class DeleteSubjectTaskEndpoint : BaseEndpoint<DeleteSubjectTaskCommand>
+    public class DeleteSubjectTaskEndpoint : BaseEndpoint<DeleteSubjectTaskCommand, bool>
     {
         public override void Configure()
         {
@@ -12,10 +12,6 @@ namespace LearningBuddy.Api.Endpoints.Subjects.SubjectTask
         public override async Task HandleAsync(DeleteSubjectTaskCommand req, CancellationToken ct)
         {
             int userId = GetUserFromAuth();
-            if (userId == 0)
-            {
-                await SendUnauthorizedAsync(ct);
-            }
             req.UserID = userId;
             await SendAsync(await Mediator.Send(req, ct));
         }

@@ -14,10 +14,6 @@ namespace LearningBuddy.Api.Endpoints.Subjects.LearningSource
         public override async Task HandleAsync(GetListOfPrivateLearningSourcesQuery req, CancellationToken ct)
         {
             int userId = GetUserFromAuth();
-            if (userId == 0)
-            {
-                await SendUnauthorizedAsync(ct);
-            }
             req.UserID = userId;
             await SendAsync(await Mediator.Send(req, ct));
         }

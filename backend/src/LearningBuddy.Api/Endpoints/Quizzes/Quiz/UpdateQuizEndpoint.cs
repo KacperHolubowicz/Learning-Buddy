@@ -2,7 +2,7 @@
 
 namespace LearningBuddy.Api.Endpoints.Quizzes.Quiz
 {
-    public class UpdateQuizEndpoint : BaseEndpoint<UpdateQuizCommand>
+    public class UpdateQuizEndpoint : BaseEndpoint<UpdateQuizCommand, bool>
     {
         public override void Configure()
         {
@@ -12,10 +12,6 @@ namespace LearningBuddy.Api.Endpoints.Quizzes.Quiz
         public override async Task HandleAsync(UpdateQuizCommand req, CancellationToken ct)
         {
             int userId = GetUserFromAuth();
-            if (userId == 0)
-            {
-                await SendUnauthorizedAsync(ct);
-            }
             req.UserID = userId;
             await SendAsync(await Mediator.Send(req, ct));
         }

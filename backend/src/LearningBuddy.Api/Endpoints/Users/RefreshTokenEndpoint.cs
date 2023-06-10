@@ -1,6 +1,5 @@
 ﻿using LearningBuddy.Application.Common.Exceptions;
 using LearningBuddy.Application.Users.Commands.RefreshToken;
-using Microsoft.Extensions.Primitives;
 
 namespace LearningBuddy.Api.Endpoints.Users
 {
@@ -14,17 +13,18 @@ namespace LearningBuddy.Api.Endpoints.Users
 
         public override async Task HandleAsync(RefreshTokenCommand req, CancellationToken ct)
         {
-            string refresh;
-            foreach(var c in HttpContext.Request.Cookies)
-            {
-                Console.WriteLine($"{c.Key} {c.Value}");
-            }
-            if (!HttpContext.Request.Cookies.TryGetValue("RefreshToken", out refresh))
-            {
-                throw new InvalidRefreshTokenException("No refresh token was provided in headers. Consider signing in again.");
-            }
-            req.RefreshToken = refresh;
+            req.RefreshToken = GetRefreshTokenFromCookie(HttpContext);
             await SendAsync(await Mediator.Send(req, ct));
+        }
+
+        private string GetRefreshTokenFromCookie(HttpContext context)
+        {
+            if (!context.Request.Cookies.TryGetValue("RefreshToken", out string refresh))
+            {
+                throw new InvalidRefreshTokenException("No refresh token was provided in cookies. Consider signing in again.");
+            }
+
+            return refresh;
         }
     }
 }

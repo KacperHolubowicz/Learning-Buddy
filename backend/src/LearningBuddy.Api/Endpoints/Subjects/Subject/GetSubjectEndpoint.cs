@@ -15,10 +15,7 @@ namespace LearningBuddy.Api.Endpoints.Subjects.Subject
         public override async Task HandleAsync(GetSubjectQuery req, CancellationToken ct)
         {
             int userId = GetUserFromAuth();
-            if (userId != 0)
-            {
-                req.UserID = userId;
-            }
+            req.UserID = userId;
             await SendAsync(await Mediator.Send(req, ct));
         }
     }

@@ -13,15 +13,20 @@ namespace LearningBuddy.Api.Endpoints.Users
         public override async Task HandleAsync(LoginUserCommand req, CancellationToken ct)
         {
             TokenResponseDTO res = await Mediator.Send(req, ct);
-            HttpContext.Response.Cookies.Append("RefreshToken", res.RefreshToken, new CookieOptions()
+            AddRefreshTokenCookie(HttpContext, res.RefreshToken, res.ExpirationDate);
+            await SendAsync(res);
+        }
+
+        public void AddRefreshTokenCookie(HttpContext context, string refreshToken, DateTimeOffset expireDate)
+        {
+            HttpContext.Response.Cookies.Append("RefreshToken", refreshToken, new CookieOptions()
             {
-                Expires = res.ExpirationDate,
+                Expires = expireDate,
                 HttpOnly = true,
                 SameSite = SameSiteMode.Lax,
                 Secure = true,
                 Domain = "localhost"
             });
-            await SendAsync(res);
         }
     }
 }

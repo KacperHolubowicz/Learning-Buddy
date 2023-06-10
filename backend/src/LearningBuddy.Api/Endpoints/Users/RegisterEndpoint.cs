@@ -2,7 +2,7 @@
 
 namespace LearningBuddy.Api.Endpoints.Users
 {
-    public class RegisterEndpoint : BaseEndpoint<RegisterUserCommand>
+    public class RegisterEndpoint : BaseEndpoint<RegisterUserCommand, bool>
     {
         public override void Configure()
         {
