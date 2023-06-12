@@ -32,6 +32,7 @@ function SubjectListPage() {
 
     return (
             <Stack gap={2} className="d-flex align-items-center">
+                <span />
                 <SubjectSearcher search={search} setSearch={setSearch} searchAction={() => fetchData()}/>
                 {
                     subjects !== null ?

@@ -35,6 +35,7 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfLearningSources
                 .Where(s => s.Subject.ID == request.SubjectID && s.Public)
                 .Select(s => new LearningSourceDTO()
                 {
+                    ID = s.ID,
                     Description = s.Description,
                     Name = s.Name,
                     Type = s.Type.ToString(),
