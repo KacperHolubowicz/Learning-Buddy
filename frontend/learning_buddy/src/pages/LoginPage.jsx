@@ -28,7 +28,6 @@ function LoginPage() {
                 navigate(from, { replace: true });
             })
             .catch((err) => {
-                // TODO different handling server errors and incorrect credentials
                 console.log(err);
                 setError(true);
             })

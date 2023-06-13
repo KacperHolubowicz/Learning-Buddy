@@ -8,7 +8,7 @@ function QuietButton({text, action}) {
 
 const styling = {
     width: "200px",
-    minHeight: "80px",
+    minHeight: "40px",
     maxHeight: "100px",
     backgroundColor: "inherit",
     color: "#8BB4CD",

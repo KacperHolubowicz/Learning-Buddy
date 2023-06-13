@@ -9,7 +9,7 @@ function NormalButton({text, action, disable}) {
 const styling = {
     minWidth: "150px",
     maxWidth: "200px",
-    minHeight: "75px",
+    minHeight: "40px",
     maxHeight: "100px",
     backgroundColor: "#8BB4CD",
     color: "#E4F6FF",

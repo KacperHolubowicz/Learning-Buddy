@@ -1,7 +1,7 @@
 function ListElementItem({text}) {
 
     const styling = {
-        minWidth: "140px",
+        minWidth: "50px",
         maxWidth: "300px",
         minHeight: "80px",
         maxHeight: "200px",
@@ -15,7 +15,9 @@ function ListElementItem({text}) {
         borderWidth: "thin",
         display: "inline-flex",
         alignItems: "center",
-        textAlign: "center"
+        textAlign: "center",
+        paddingLeft: "5px",
+        paddingRight: "5px"
     }
 
     return (
