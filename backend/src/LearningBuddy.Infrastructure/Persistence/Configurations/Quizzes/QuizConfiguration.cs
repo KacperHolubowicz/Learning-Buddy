@@ -18,10 +18,8 @@ namespace LearningBuddy.Infrastructure.Persistence.Configurations.Quizzes
             builder.HasMany(q => q.Attempts)
                 .WithOne(a => a.Quiz);
             builder.Property(q => q.CreatedAt)
-                .HasDefaultValue(DateTimeOffset.UtcNow)
                 .IsRequired();
             builder.Property(q => q.ModifiedAt)
-                .HasDefaultValue(DateTimeOffset.UtcNow)
                 .IsRequired();
             builder.Property(q => q.MaxPoints)
                 .IsRequired();

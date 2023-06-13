@@ -21,7 +21,6 @@ namespace LearningBuddy.Infrastructure.Persistence.Configurations.Quizzes
             builder.HasMany(a => a.Answers)
                 .WithOne(an => an.Attempt);
             builder.Property(a => a.AttemptedAt)
-                .HasDefaultValue(DateTimeOffset.UtcNow)
                 .IsRequired();
             builder.Property(a => a.Points)
                 .IsRequired();
