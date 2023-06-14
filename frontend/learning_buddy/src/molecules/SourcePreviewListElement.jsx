@@ -18,8 +18,8 @@ function SourcePreviewListElement({source, id, priv}) {
                 {
                     source.isOwner || priv ? 
                     <div style={{display: "flex", marginLeft: "auto"}}>
-                        <ListElementOperation text="Edit" action={() => navigate(`learning-source/${id}/edit`)}/>
-                        <ListElementOperation text="Delete" action={() => navigate(`learning-source/${id}/delete`)}/> 
+                        <ListElementOperation text="Edit" action={() => navigate(`/learning-sources/${id}/edit`)}/>
+                        <ListElementOperation text="Delete" action={() => navigate(`/learning-sources/${id}/delete`)}/> 
                     </div> :
                     <ListElementItem text={source.type} />
                 }

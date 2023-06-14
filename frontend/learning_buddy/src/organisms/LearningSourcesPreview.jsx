@@ -32,7 +32,11 @@ function LearningSourcesPreview({subjectId}) {
     return (
         <Wrapper height="460px" width="460px">
             <Row className="mt-2 mb-2">
-                <h2 className="d-flex justify-content-center">This subject's learning sources</h2>
+                {
+                    privateSourcesOption ?
+                    <h2 className="d-flex justify-content-center">Your private learning sources</h2> :
+                    <h2 className="d-flex justify-content-center">Public learning sources</h2>
+                }
             </Row>
             <Row>
                 <Col className="d-flex justify-content-center">

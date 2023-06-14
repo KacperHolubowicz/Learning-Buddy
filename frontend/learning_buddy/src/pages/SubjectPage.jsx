@@ -8,11 +8,11 @@ import SubjectTasksPreview from "../organisms/SubjectTasksPreview";
 import QuizzesPreview from "../organisms/QuizzesPreview";
 
 function SubjectPage() {
-    let { id } = useParams();
+    let { subjectId } = useParams();
     let [subject, setSubject] = useState({});
 
     async function fetchSubject() {
-        await getSubject(id)
+        await getSubject(subjectId)
             .then((resp) => {
                 console.log(resp);
                 setSubject(resp?.data)
@@ -32,18 +32,18 @@ function SubjectPage() {
         <Container className="mt-2" fluid>
             <Row>
                 <Col xs={3} className="d-flex justify-content-center">
-                    <LearningSourcesPreview subjectId={id} />
+                    <LearningSourcesPreview subjectId={subjectId} />
                 </Col>
                 <Col xs={6} className="d-flex justify-content-center">
                     <SubjectDetails subject={subject} />
                 </Col>
                 <Col xs={3} className="d-flex justify-content-center">
-                    <SubjectTasksPreview subjectId={id} />
+                    <SubjectTasksPreview subjectId={subjectId} />
                 </Col>
             </Row>
             <Row>
                 <Col>
-                    <QuizzesPreview subjectId={id} />
+                    <QuizzesPreview subjectId={subjectId} />
                 </Col>
             </Row>
         </Container>

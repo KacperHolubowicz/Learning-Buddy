@@ -38,8 +38,8 @@ function SubjectListPage() {
                     subjects !== null ?
                     subjects.length === 0 ?
                     <h1>No subjects on the list</h1> :
-                    subjects.map((subject, i) => (
-                        <SubjectListElement subject={subject} key={i} />
+                    subjects.map((subject) => (
+                        <SubjectListElement subject={subject} key={subject.id} />
                     )) :
                     "Loading"
                 }
