@@ -1,4 +1,4 @@
-function ListElementItem({text}) {
+function ListElementItem({text, textColor='#DAEDFF'}) {
 
     const styling = {
         minWidth: "50px",
@@ -9,7 +9,7 @@ function ListElementItem({text}) {
         borderRightStyle: "solid",
         borderColor: "#DAEDFF",
         backgroundColor: "inherit",
-        color: "#DAEDFF",
+        color: textColor,
         fontSize: "18px",
         justifyContent: "center",
         borderWidth: "thin",

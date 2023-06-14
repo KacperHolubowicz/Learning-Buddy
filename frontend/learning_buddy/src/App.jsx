@@ -14,6 +14,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import NotFoundPage from './pages/NotFoundPage';
+import SubjectTaskListPage from './pages/SubjectTaskListPage';
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
         <Route path="subjects" element={<SubjectListPage />} />
         <Route path="subjects/:subjectId" element={<SubjectPage />} />
         <Route path="subjects/:subjectId/learning-sources" element={<LearningSourceListPage />} />
+        <Route path="subjects/:subjectId/subject-tasks" element={<SubjectTaskListPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
