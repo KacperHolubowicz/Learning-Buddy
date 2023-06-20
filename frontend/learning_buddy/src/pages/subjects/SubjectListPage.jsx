@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import getSubjects from "../logic/api/proxy/subjects/getSubjects";
-import SubjectListElement from "../molecules/SubjectListElement";
+import getSubjects from "../../logic/api/proxy/subjects/getSubjects";
+import SubjectListElement from "../../molecules/SubjectListElement";
 import Stack from "react-bootstrap/Stack";
-import SubjectSearcher from "../molecules/SubjectSearcher";
-import PageFooter from "../molecules/PageFooter";
+import SubjectSearcher from "../../molecules/SubjectSearcher";
+import PageFooter from "../../molecules/PageFooter";
 
 function SubjectListPage() {
     let [subjects, setSubjects] = useState([]);

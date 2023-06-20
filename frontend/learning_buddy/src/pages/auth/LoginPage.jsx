@@ -1,11 +1,11 @@
-import LoudButton from "../atoms/LoudButton";
-import NormalButton from "../atoms/NormalButton";
-import Wrapper from "../atoms/Wrapper";
+import LoudButton from "../../atoms/LoudButton";
+import NormalButton from "../../atoms/NormalButton";
+import Wrapper from "../../atoms/Wrapper";
 import {Container, Row, Col} from "react-bootstrap";
 import { useState } from "react";
-import loginRequest from "../logic/api/proxy/user/loginRequest";
+import loginRequest from "../../logic/api/proxy/user/loginRequest";
 import { useNavigate, useLocation } from "react-router-dom";
-import useAuth from "../logic/hooks/useAuth";
+import useAuth from "../../logic/hooks/useAuth";
 
 function LoginPage() {
     let [login, setLogin] = useState("");

@@ -34,7 +34,7 @@ function LearningSourcesPreview({subjectId}) {
             <Row className="mt-2 mb-2">
                 {
                     privateSourcesOption ?
-                    <h2 className="d-flex justify-content-center">Your private learning sources</h2> :
+                    <h2 className="d-flex justify-content-center">Your learning sources</h2> :
                     <h2 className="d-flex justify-content-center">Public learning sources</h2>
                 }
             </Row>

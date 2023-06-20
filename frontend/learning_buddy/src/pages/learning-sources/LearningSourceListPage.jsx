@@ -1,11 +1,11 @@
 import {Stack, Row, Col} from "react-bootstrap";
-import NormalButton from "../atoms/NormalButton";
-import QuietButton from "../atoms/QuietButton";
+import NormalButton from "../../atoms/NormalButton";
+import QuietButton from "../../atoms/QuietButton";
 import { useEffect, useState } from "react";
-import getSources from "../logic/api/proxy/subjects/getSources";
+import getSources from "../../logic/api/proxy/subjects/getSources";
 import { useNavigate, useParams } from "react-router-dom";
-import SourceListElement from "../molecules/SourceListElement";
-import PageFooter from "../molecules/PageFooter";
+import SourceListElement from "../../molecules/SourceListElement";
+import PageFooter from "../../molecules/PageFooter";
 
 function LearningSourceListPage() {
     let [sources, setSources] = useState([]);
@@ -44,13 +44,13 @@ function LearningSourceListPage() {
                     <QuietButton text="Public sources" action={() => setPrivateSources(false)} />
                 </Col>
                 <Col>
-                    <QuietButton text="Private sources" action={() => setPrivateSources(true)} />
+                    <QuietButton text="Your sources" action={() => setPrivateSources(true)} />
                 </Col>
             </Row>
             <Row>
                 {
                     privateSources ?
-                    <h2 className="d-flex justify-content-center">Your private learning sources</h2> :
+                    <h2 className="d-flex justify-content-center">Your learning sources</h2> :
                     <h2 className="d-flex justify-content-center">Public learning sources</h2>
                 }
             </Row>
