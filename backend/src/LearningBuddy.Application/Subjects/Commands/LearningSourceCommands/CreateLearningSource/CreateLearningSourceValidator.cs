@@ -13,8 +13,8 @@ namespace LearningBuddy.Application.Subjects.Commands.LearningSourceCommands.Cre
                 .NotEmpty()
                 .WithMessage("Subject ID must be provided");
             RuleFor(x => x.Public)
-                .NotEmpty()
-                .WithMessage("Must explicitly provide value for 'Public'");
+                .Must(x => x == true || x == false)
+                .WithMessage("Must explicitly provide false or true value for 'Public'");
             RuleFor(x => x.Name)
                 .NotEmpty()
                 .WithMessage("Name must be provided")
