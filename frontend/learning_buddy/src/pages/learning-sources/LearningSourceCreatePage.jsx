@@ -14,7 +14,10 @@ function LearningSourceCreatePage() {
     const navigate = useNavigate();
 
     async function createLearningSource() {
-        await postSource(subjectId, name, description, sourcePublic, sourceType);
+        await postSource(subjectId, name, description, sourcePublic, sourceType)
+            .catch((err) => {
+                console.log(err);
+            });
         navigate(`/subjects/${subjectId}/learning-sources`);
     }
 

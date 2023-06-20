@@ -60,7 +60,7 @@ function LearningSourceListPage() {
                 <h1>No learning sources on the list</h1> :
                 sources.map((source) => (
                     <Row className="mt-2">
-                        <SourceListElement source={source} key={source.id} priv={privateSources}/>
+                        <SourceListElement source={source} priv={privateSources}/>
                     </Row>
                 )) :
                 "Loading"
