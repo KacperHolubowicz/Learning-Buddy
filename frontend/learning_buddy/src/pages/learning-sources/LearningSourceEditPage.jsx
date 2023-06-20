@@ -2,24 +2,41 @@ import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import LoudButton from "../../atoms/LoudButton";
 import { useParams, useNavigate } from "react-router-dom";
-import postSource from "../../logic/api/proxy/subjects/learning-sources/postSource";
+import editSource from "../../logic/api/proxy/subjects/learning-sources/editSource";
+import getSource from "../../logic/api/proxy/subjects/learning-sources/getSource";
 import Wrapper from "../../atoms/Wrapper";
+import { useEffect } from "react";
 
-function LearningSourceCreatePage() {
+function LearningSourceEditPage() {
     let [name, setName] = useState("");
     let [description, setDescription] = useState("");
-    let [sourcePublic, setSourcePublic] = useState(false);
     let [sourceType, setSourceType] = useState(1);
-    const { subjectId } = useParams();
+    const { learningSourceId } = useParams();
     const navigate = useNavigate();
 
-    async function createLearningSource() {
-        await postSource(subjectId, name, description, sourcePublic, sourceType)
+    async function editLearningSource() {
+        await editSource(learningSourceId, name, description, sourceType)
             .catch((err) => {
                 console.log(err);
             });
-        navigate(`/subjects/${subjectId}/learning-sources`);
+        navigate(-1);
     }
+
+    async function fetchSource() {
+        await getSource(learningSourceId)
+            .then((resp) => {
+                setName(resp?.data?.name);
+                setDescription(resp?.data?.description);
+                setSourceType(resp?.data?.type);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
+    }
+
+    useEffect(() => {
+        fetchSource();
+    }, []);
 
     return (
         <Container className="mt-3">
@@ -29,7 +46,7 @@ function LearningSourceCreatePage() {
                         <h3>Learning source name</h3>
                     </Col>
                     <Col>
-                        <input type="text" onChange={(e) => setName(e.target.value)}/>
+                        <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className="mt-5 pe-3 px-3">
@@ -37,15 +54,7 @@ function LearningSourceCreatePage() {
                         <h3>Learning source description</h3>
                     </Col>
                     <Col>
-                        <input type="text" onChange={(e) => setDescription(e.target.value)}/>
-                    </Col>
-                </Row>
-                <Row className="mt-5 pe-3 px-3">
-                    <Col>
-                        <h3>Public</h3>
-                    </Col>
-                    <Col>
-                        <input type="checkbox" onChange={() => setSourcePublic(!sourcePublic)}/>
+                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
                     </Col>
                 </Row>
                 <Row className="mt-5 pe-3 px-3">
@@ -54,15 +63,15 @@ function LearningSourceCreatePage() {
                     </Col>
                     <Col>
                         <select onChange={(e) => setSourceType(e.target.value)}>
-                            <option value={0}>Book</option>
-                            <option selected value={1}>Website URL</option>
-                            <option value={2}>Video URL</option>
+                            <option selected={sourceType === 0} value={0}>Book</option>
+                            <option selected={sourceType === 1} value={1}>Website URL</option>
+                            <option selected={sourceType === 2} value={2}>Video URL</option>
                         </select>
                     </Col>
                 </Row>
                 <Row className="mt-5 pb-3 pe-3 px-3">
                     <Col>
-                        <LoudButton text="Create" action={() => createLearningSource()} />
+                        <LoudButton text="Confirm" action={() => editLearningSource()} />
                     </Col>
                 </Row>
             </Wrapper>
@@ -70,4 +79,4 @@ function LearningSourceCreatePage() {
     )
 }
 
-export default LearningSourceCreatePage;
+export default LearningSourceEditPage;

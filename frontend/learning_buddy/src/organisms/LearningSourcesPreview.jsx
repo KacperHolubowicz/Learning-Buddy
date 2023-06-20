@@ -5,7 +5,7 @@ import { Row, Col } from "react-bootstrap";
 import NormalButton from "../atoms/NormalButton";
 import LoudButton from "../atoms/LoudButton";
 import { useState, useEffect } from "react";
-import getSourcesPreview from "../logic/api/proxy/subjects/getSourcesPreview";
+import getSourcesPreview from "../logic/api/proxy/subjects/learning-sources/getSourcesPreview";
 import { useNavigate } from "react-router-dom";
 
 function LearningSourcesPreview({subjectId}) {

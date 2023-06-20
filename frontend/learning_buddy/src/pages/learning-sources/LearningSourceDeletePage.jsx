@@ -3,8 +3,8 @@ import { Col, Container, Row } from "react-bootstrap";
 import LoudButton from "../../atoms/LoudButton";
 import { useParams, useNavigate } from "react-router-dom";
 import Wrapper from "../../atoms/Wrapper";
-import getSource from "../../logic/api/proxy/subjects/getSource";
-import deleteSource from "../../logic/api/proxy/subjects/deleteSource";
+import getSource from "../../logic/api/proxy/subjects/learning-sources/getSource";
+import deleteSource from "../../logic/api/proxy/subjects/learning-sources/deleteSource";
 
 function LearningSourceDeletePage() {
     let [source, setSource] = useState({});

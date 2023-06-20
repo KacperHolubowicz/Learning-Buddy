@@ -2,7 +2,7 @@ import {Stack, Row, Col} from "react-bootstrap";
 import NormalButton from "../../atoms/NormalButton";
 import QuietButton from "../../atoms/QuietButton";
 import { useEffect, useState } from "react";
-import getSources from "../../logic/api/proxy/subjects/getSources";
+import getSources from "../../logic/api/proxy/subjects/learning-sources/getSources";
 import { useNavigate, useParams } from "react-router-dom";
 import SourceListElement from "../../molecules/SourceListElement";
 import PageFooter from "../../molecules/PageFooter";
