@@ -99,7 +99,9 @@ namespace LearningBuddy.Application.Quizzes.Commands.QuizCommands.CreateQuiz
                 Name = quiz.Name,
                 Questions = quiz.Questions.Select(CommandToEntity).ToList(),
                 Subject = sub,
-                User = user
+                User = user,
+                CreatedAt = DateTimeOffset.UtcNow,
+                ModifiedAt = DateTimeOffset.UtcNow
             };
         }
     }

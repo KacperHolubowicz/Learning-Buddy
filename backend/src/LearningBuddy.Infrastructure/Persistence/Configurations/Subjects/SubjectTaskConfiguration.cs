@@ -15,7 +15,6 @@ namespace LearningBuddy.Infrastructure.Persistence.Configurations.Subjects
             builder.Property(st => st.Description)
                 .HasMaxLength(200);
             builder.Property(st => st.CreatedAt)
-                .HasDefaultValue(DateTimeOffset.UtcNow)
                 .IsRequired();
             builder.Property(st => st.Priority)
                 .IsRequired();

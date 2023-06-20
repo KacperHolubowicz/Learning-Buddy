@@ -5,6 +5,7 @@ import SubjectPage from './pages/SubjectPage';
 import MainLayout from "./templates/MainLayout";
 import LoginPage from "./pages/LoginPage";
 import Authorize from "./logic/Authorize";
+import LearningSourceListPage from "./pages/LearningSourceListPage";
 
 import {
   createBrowserRouter,
@@ -13,6 +14,7 @@ import {
   createRoutesFromElements,
 } from "react-router-dom";
 import NotFoundPage from './pages/NotFoundPage';
+import SubjectTaskListPage from './pages/SubjectTaskListPage';
 
 function App() {
 
@@ -23,7 +25,9 @@ function App() {
       <Route path="/" element={<MainLayout />} >
         <Route index element={<MainPage />} />
         <Route path="subjects" element={<SubjectListPage />} />
-        <Route path="subjects/:id" element={<SubjectPage />} />
+        <Route path="subjects/:subjectId" element={<SubjectPage />} />
+        <Route path="subjects/:subjectId/learning-sources" element={<LearningSourceListPage />} />
+        <Route path="subjects/:subjectId/subject-tasks" element={<SubjectTaskListPage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>

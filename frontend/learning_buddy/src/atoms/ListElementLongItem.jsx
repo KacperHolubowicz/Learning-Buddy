@@ -1,15 +1,15 @@
-function ListElementItem({text, textColor='#DAEDFF'}) {
+function ListElementLongItem({text}) {
 
     const styling = {
-        minWidth: "50px",
-        maxWidth: "300px",
+        minWidth: "300px",
+        maxWidth: "600px",
         minHeight: "80px",
         maxHeight: "200px",
         borderLeftStyle: "solid",
         borderRightStyle: "solid",
         borderColor: "#DAEDFF",
         backgroundColor: "inherit",
-        color: textColor,
+        color: "#DAEDFF",
         fontSize: "18px",
         justifyContent: "center",
         borderWidth: "thin",
@@ -17,7 +17,8 @@ function ListElementItem({text, textColor='#DAEDFF'}) {
         alignItems: "center",
         textAlign: "center",
         paddingLeft: "5px",
-        paddingRight: "5px"
+        paddingRight: "5px",
+        wordWrap: "break-word"
     }
 
     return (
@@ -27,4 +28,4 @@ function ListElementItem({text, textColor='#DAEDFF'}) {
     )
 }
 
-export default ListElementItem;
+export default ListElementLongItem;

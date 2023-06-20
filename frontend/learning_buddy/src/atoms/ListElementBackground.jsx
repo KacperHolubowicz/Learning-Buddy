@@ -7,8 +7,8 @@ function ListElementBackground(props) {
 }
 
 const styling={
-    width: "1200px",
-    minHeight: "100px",
+    width: "1400px",
+    minHeight: "80px",
     maxHeight: "200px",
     backgroundColor: "#8BB4CD",
     display: "inline-flex"

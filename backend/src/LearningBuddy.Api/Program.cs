@@ -14,15 +14,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddFastEndpoints();
+
 var corsBuilder = new CorsPolicyBuilder();
 corsBuilder.AllowAnyHeader();
 corsBuilder.AllowAnyMethod();
-corsBuilder.WithOrigins("https://localhost:3000", "http://localhost:3000");
 corsBuilder.AllowCredentials();
+corsBuilder.WithOrigins("https://localhost:3000", "http://localhost:3000");
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("ReactPolicy", corsBuilder.Build());
 });
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -42,6 +44,7 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true
     };
 });
+
 builder.Services.AddResponseCaching();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -68,9 +71,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("ReactPolicy");
 app.UseModifiedExceptionHandler();
 app.UseAuthorization();
 app.UseFastEndpoints();
-app.UseCors("ReactPolicy");
 
 app.Run();

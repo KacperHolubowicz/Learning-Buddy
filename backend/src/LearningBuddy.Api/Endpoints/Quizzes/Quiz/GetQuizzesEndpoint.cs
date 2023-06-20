@@ -7,7 +7,7 @@ namespace LearningBuddy.Api.Endpoints.Quizzes.Quiz
     {
         public override void Configure()
         {
-            Get(Url + "{SubjectID}/quiz");
+            Get(Url + "subject/{SubjectID}/quiz");
             AllowAnonymous();
             ResponseCache(60);
         }

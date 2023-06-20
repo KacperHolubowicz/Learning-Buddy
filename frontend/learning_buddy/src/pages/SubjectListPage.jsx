@@ -32,13 +32,14 @@ function SubjectListPage() {
 
     return (
             <Stack gap={2} className="d-flex align-items-center">
+                <span />
                 <SubjectSearcher search={search} setSearch={setSearch} searchAction={() => fetchData()}/>
                 {
                     subjects !== null ?
                     subjects.length === 0 ?
                     <h1>No subjects on the list</h1> :
-                    subjects.map((subject, i) => (
-                        <SubjectListElement subject={subject} key={i} />
+                    subjects.map((subject) => (
+                        <SubjectListElement subject={subject} key={subject.id} />
                     )) :
                     "Loading"
                 }

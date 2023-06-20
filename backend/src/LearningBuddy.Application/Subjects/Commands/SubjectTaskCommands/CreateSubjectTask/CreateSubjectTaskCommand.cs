@@ -50,7 +50,7 @@ namespace LearningBuddy.Application.Subjects.Commands.SubjectTaskCommands.Create
                 Name = command.Name,
                 Description = command.Description,
                 Finished = false,
-                CreatedAt = DateTime.UtcNow,
+                CreatedAt = DateTimeOffset.UtcNow,
                 Deadline = command.Deadline.Value,
                 Difficulty = command.Difficulty,
                 User = creator,
