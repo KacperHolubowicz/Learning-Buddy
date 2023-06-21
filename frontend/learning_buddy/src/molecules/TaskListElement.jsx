@@ -11,6 +11,8 @@ function TaskListElement({task}) {
         year: "numeric",
         month: "long",
         day: "numeric",
+        hour: "numeric",
+        minute: "numeric"
     };
     const styling = {
         display: "flex",

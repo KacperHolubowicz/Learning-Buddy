@@ -13,7 +13,8 @@ function LearningSourceCreatePage() {
     const { subjectId } = useParams();
     const navigate = useNavigate();
 
-    async function createLearningSource() {
+    async function createLearningSource(e) {
+        e.preventDefault();
         await postSource(subjectId, name, description, sourcePublic, sourceType)
             .catch((err) => {
                 console.log(err);
@@ -24,47 +25,49 @@ function LearningSourceCreatePage() {
     return (
         <Container className="mt-3">
             <Wrapper>
-                <Row className="mt-2 pe-3 px-3">
-                    <Col>
-                        <h3>Learning source name</h3>
-                    </Col>
-                    <Col>
-                        <input type="text" onChange={(e) => setName(e.target.value)}/>
-                    </Col>
-                </Row>
-                <Row className="mt-5 pe-3 px-3">
-                    <Col>
-                        <h3>Learning source description</h3>
-                    </Col>
-                    <Col>
-                        <input type="text" onChange={(e) => setDescription(e.target.value)}/>
-                    </Col>
-                </Row>
-                <Row className="mt-5 pe-3 px-3">
-                    <Col>
-                        <h3>Public</h3>
-                    </Col>
-                    <Col>
-                        <input type="checkbox" onChange={() => setSourcePublic(!sourcePublic)}/>
-                    </Col>
-                </Row>
-                <Row className="mt-5 pe-3 px-3">
-                    <Col>
-                        <h3>Learning source type</h3>
-                    </Col>
-                    <Col>
-                        <select onChange={(e) => setSourceType(e.target.value)}>
-                            <option value={0}>Book</option>
-                            <option selected value={1}>Website URL</option>
-                            <option value={2}>Video URL</option>
-                        </select>
-                    </Col>
-                </Row>
-                <Row className="mt-5 pb-3 pe-3 px-3">
-                    <Col>
-                        <LoudButton text="Create" action={() => createLearningSource()} />
-                    </Col>
-                </Row>
+                <form>
+                    <Row className="mt-2 pe-3 px-3">
+                        <Col>
+                            <h3>Learning source name</h3>
+                        </Col>
+                        <Col>
+                            <input type="text" required onChange={(e) => setName(e.target.value)}/>
+                        </Col>
+                    </Row>
+                    <Row className="mt-5 pe-3 px-3">
+                        <Col>
+                            <h3>Learning source description</h3>
+                        </Col>
+                        <Col>
+                            <input type="text" onChange={(e) => setDescription(e.target.value)}/>
+                        </Col>
+                    </Row>
+                    <Row className="mt-5 pe-3 px-3">
+                        <Col>
+                            <h3>Public</h3>
+                        </Col>
+                        <Col>
+                            <input type="checkbox" onChange={() => setSourcePublic(!sourcePublic)}/>
+                        </Col>
+                    </Row>
+                    <Row className="mt-5 pe-3 px-3">
+                        <Col>
+                            <h3>Learning source type</h3>
+                        </Col>
+                        <Col>
+                            <select onChange={(e) => setSourceType(e.target.value)}>
+                                <option value={0}>Book</option>
+                                <option selected value={1}>Website URL</option>
+                                <option value={2}>Video URL</option>
+                            </select>
+                        </Col>
+                    </Row>
+                    <Row className="mt-5 pb-3 pe-3 px-3">
+                        <Col>
+                            <LoudButton submit={true} text="Create" action={(e) => createLearningSource(e)} />
+                        </Col>
+                    </Row>
+                </form>
             </Wrapper>
         </Container>
     )

@@ -3,7 +3,7 @@ import { Row, Col } from "react-bootstrap";
 import TaskPreviewListElement from "../molecules/TaskPreviewListElement";
 import NormalButton from "../atoms/NormalButton";
 import LoudButton from "../atoms/LoudButton";
-import getTasksPreview from "../logic/api/proxy/subjects/getTasksPreview";
+import getTasksPreview from "../logic/api/proxy/subjects/subject-tasks/getTasksPreview";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 

@@ -22,7 +22,8 @@ function LearningSourceEditPage() {
         navigate(-1);
     }
 
-    async function fetchSource() {
+    async function fetchSource(e) {
+        e.preventDefault();
         await getSource(learningSourceId)
             .then((resp) => {
                 setName(resp?.data?.name);
@@ -41,39 +42,41 @@ function LearningSourceEditPage() {
     return (
         <Container className="mt-3">
             <Wrapper>
-                <Row className="mt-2 pe-3 px-3">
-                    <Col>
-                        <h3>Learning source name</h3>
-                    </Col>
-                    <Col>
-                        <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
-                    </Col>
-                </Row>
-                <Row className="mt-5 pe-3 px-3">
-                    <Col>
-                        <h3>Learning source description</h3>
-                    </Col>
-                    <Col>
-                        <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
-                    </Col>
-                </Row>
-                <Row className="mt-5 pe-3 px-3">
-                    <Col>
-                        <h3>Learning source type</h3>
-                    </Col>
-                    <Col>
-                        <select onChange={(e) => setSourceType(e.target.value)}>
-                            <option selected={sourceType === 0} value={0}>Book</option>
-                            <option selected={sourceType === 1} value={1}>Website URL</option>
-                            <option selected={sourceType === 2} value={2}>Video URL</option>
-                        </select>
-                    </Col>
-                </Row>
-                <Row className="mt-5 pb-3 pe-3 px-3">
-                    <Col>
-                        <LoudButton text="Confirm" action={() => editLearningSource()} />
-                    </Col>
-                </Row>
+                <form>
+                    <Row className="mt-2 pe-3 px-3">
+                        <Col>
+                            <h3>Learning source name</h3>
+                        </Col>
+                        <Col>
+                            <input type="text" value={name} onChange={(e) => setName(e.target.value)}/>
+                        </Col>
+                    </Row>
+                    <Row className="mt-5 pe-3 px-3">
+                        <Col>
+                            <h3>Learning source description</h3>
+                        </Col>
+                        <Col>
+                            <input type="text" value={description} onChange={(e) => setDescription(e.target.value)}/>
+                        </Col>
+                    </Row>
+                    <Row className="mt-5 pe-3 px-3">
+                        <Col>
+                            <h3>Learning source type</h3>
+                        </Col>
+                        <Col>
+                            <select onChange={(e) => setSourceType(e.target.value)}>
+                                <option selected={sourceType === 0} value={0}>Book</option>
+                                <option selected={sourceType === 1} value={1}>Website URL</option>
+                                <option selected={sourceType === 2} value={2}>Video URL</option>
+                            </select>
+                        </Col>
+                    </Row>
+                    <Row className="mt-5 pb-3 pe-3 px-3">
+                        <Col>
+                            <LoudButton submit={true} text="Confirm" action={(e) => editLearningSource(e)} />
+                        </Col>
+                    </Row>
+                </form>
             </Wrapper>
         </Container>
     )

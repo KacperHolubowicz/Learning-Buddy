@@ -1,7 +1,7 @@
 import {Stack, Row, Col} from "react-bootstrap";
 import NormalButton from "../../atoms/NormalButton";
 import { useEffect, useState } from "react";
-import getTasks from "../../logic/api/proxy/subjects/getTasks";
+import getTasks from "../../logic/api/proxy/subjects/subject-tasks/getTasks";
 import { useNavigate, useParams } from "react-router-dom";
 import TaskListElement from "../../molecules/TaskListElement";
 import PageFooter from "../../molecules/PageFooter";
