@@ -5,7 +5,7 @@ import { Row, Col } from "react-bootstrap";
 import NormalButton from "../atoms/NormalButton";
 import LoudButton from "../atoms/LoudButton";
 import { useState, useEffect } from "react";
-import getSourcesPreview from "../logic/api/proxy/subjects/getSourcesPreview";
+import getSourcesPreview from "../logic/api/proxy/subjects/learning-sources/getSourcesPreview";
 import { useNavigate } from "react-router-dom";
 
 function LearningSourcesPreview({subjectId}) {
@@ -34,7 +34,7 @@ function LearningSourcesPreview({subjectId}) {
             <Row className="mt-2 mb-2">
                 {
                     privateSourcesOption ?
-                    <h2 className="d-flex justify-content-center">Your private learning sources</h2> :
+                    <h2 className="d-flex justify-content-center">Your learning sources</h2> :
                     <h2 className="d-flex justify-content-center">Public learning sources</h2>
                 }
             </Row>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import getSubject from "../logic/api/proxy/subjects/getSubject";
+import getSubject from "../../logic/api/proxy/subjects/getSubject";
 import {Container, Row, Col} from "react-bootstrap";
-import SubjectDetails from "../organisms/SubjectDetails";
-import LearningSourcesPreview from "../organisms/LearningSourcesPreview";
-import SubjectTasksPreview from "../organisms/SubjectTasksPreview";
-import QuizzesPreview from "../organisms/QuizzesPreview";
+import SubjectDetails from "../../organisms/SubjectDetails";
+import LearningSourcesPreview from "../../organisms/LearningSourcesPreview";
+import SubjectTasksPreview from "../../organisms/SubjectTasksPreview";
+import QuizzesPreview from "../../organisms/QuizzesPreview";
 
 function SubjectPage() {
     let { subjectId } = useParams();

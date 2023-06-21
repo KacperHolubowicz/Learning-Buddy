@@ -12,7 +12,7 @@ function SourceListElement({source, priv}) {
     }
 
     return (
-        <div style={styling}>
+        <div style={styling} key={source.id}>
             <ListElementBackground>
                 <ListElementItem text={source.name} />
                 <ListElementItem text={source.type} />
