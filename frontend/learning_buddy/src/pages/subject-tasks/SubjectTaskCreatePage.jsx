@@ -13,6 +13,7 @@ function SubjectTaskCreatePage() {
     let [priority, setPriority] = useState(1);
     let [difficulty, setDifficulty] = useState(1);
     let [deadline, setDeadline] = useState(new Date());
+    let [errorMessage, setErrorMessage] = useState("");
     const { subjectId } = useParams();
     const navigate = useNavigate();
 
@@ -25,10 +26,30 @@ function SubjectTaskCreatePage() {
         navigate(`/subjects/${subjectId}/subject-tasks`);
     }
 
+    function validateDate(date) {
+        const dateNow = new Date().getTime()
+        const dateProvided = new Date(date).getTime();
+        if(dateNow >= dateProvided) {
+            setErrorMessage("The deadline must be set in the future");
+        } else {
+            setDeadline(date);
+            setErrorMessage("");
+        }
+    }
+
     return (
         <Container className="mt-3">
             <Wrapper>
                 <form>
+                    {
+                        errorMessage !== "" ?
+                        <Row className="mt-2 pe-3 px-3">
+                            <div className="alert alert-danger">
+                                {errorMessage}
+                            </div>
+                        </Row> :
+                        ""
+                    }
                     <Row className="mt-2 pe-3 px-3">
                         <Col>
                             <h3>Task name</h3>
@@ -66,20 +87,21 @@ function SubjectTaskCreatePage() {
                             <h3>Task deadline</h3>
                         </Col>
                         <Col>
-                            <DatePicker 
-                                dateFormat="d MMMM, yyyy h:mm"
+                            <DatePicker
+                                showIcon
+                                dateFormat="d MMMM, yyyy HH:mm"
                                 timeFormat="HH:mm"
                                 minDate={new Date()}
                                 showTimeSelect
                                 required
                                 selected={deadline}
-                                onChange={(date) => setDeadline(date)} 
+                                onChange={(date) => validateDate(date)}
                             />
                         </Col>
                     </Row>
                     <Row className="mt-5 pb-3 pe-3 px-3">
                         <Col>
-                            <LoudButton text="Create" action={(e) => createSubjectTask(e)} />
+                            <LoudButton disable={errorMessage !== ""} text="Create" action={(e) => createSubjectTask(e)} />
                         </Col>
                     </Row>
                 </form>

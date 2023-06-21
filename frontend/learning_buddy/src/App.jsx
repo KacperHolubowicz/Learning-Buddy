@@ -19,6 +19,7 @@ import LearningSourceCreatePage from './pages/learning-sources/LearningSourceCre
 import LearningSourceDeletePage from './pages/learning-sources/LearningSourceDeletePage';
 import LearningSourceEditPage from './pages/learning-sources/LearningSourceEditPage';
 import SubjectTaskCreatePage from './pages/subject-tasks/SubjectTaskCreatePage';
+import SubjectTaskDeletePage from './pages/subject-tasks/SubjectTaskDeletePage';
 
 function App() {
 
@@ -37,7 +38,7 @@ function App() {
         <Route path="learning-sources/:learningSourceId/edit" element={<LearningSourceEditPage />}/>
         <Route path="learning-sources/:learningSourceId/delete" element={<LearningSourceDeletePage />}/>
         <Route path="subject-tasks/:subjectTaskId/edit" />
-        <Route path="subject-tasks/:subjectTaskId/delete" />
+        <Route path="subject-tasks/:subjectTaskId/delete" element={<SubjectTaskDeletePage />} />
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
