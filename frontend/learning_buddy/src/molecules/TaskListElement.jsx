@@ -11,6 +11,8 @@ function TaskListElement({task}) {
         year: "numeric",
         month: "long",
         day: "numeric",
+        hour: "numeric",
+        minute: "numeric"
     };
     const styling = {
         display: "flex",
@@ -30,7 +32,11 @@ function TaskListElement({task}) {
                 <ListElementItem text={"Difficulty: " + task.difficulty} />
                 <ListElementItem textColor={deadlineTextColor} text={"Deadline: " + new Intl.DateTimeFormat("en-GB", options).format(Date.parse(task.deadline))} />
                 <div style={{display: "flex", marginLeft: "auto"}}>
-                    <ListElementOperation text="Edit" action={() => navigate(`/subject-tasks/${task.id}/edit`)}/>
+                    { 
+                        !task.finished ?
+                        <ListElementOperation text="Edit" action={() => navigate(`/subject-tasks/${task.id}/edit`)}/> :
+                        ""
+                    }
                     <ListElementOperation text="Delete" action={() => navigate(`/subject-tasks/${task.id}/delete`)}/> 
                 </div>
             </ListElementBackground>

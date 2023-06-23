@@ -1,6 +1,6 @@
-function LoudButton({text, action, disable}) {
+function LoudButton({text, action, disable=false, submit=false}) {
     return (
-    <button style={styling} onClick={action} disabled={disable}>
+    <button style={styling} onClick={action} disabled={disable} type={submit ? "submit" : ""}>
         {text}
     </button>
     )
