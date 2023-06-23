@@ -8,32 +8,64 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 function SubjectTaskCreatePage() {
+    const startDeadlineDate = new Date().setDate(new Date().getDate() + 1);
     let [name, setName] = useState("");
     let [description, setDescription] = useState("");
     let [priority, setPriority] = useState(1);
     let [difficulty, setDifficulty] = useState(1);
-    let [deadline, setDeadline] = useState(new Date());
-    let [errorMessage, setErrorMessage] = useState("");
+    let [deadline, setDeadline] = useState(new Date(startDeadlineDate));
+    let [errorDeadlineMessage, setErrorDeadlineMessage] = useState("");
+    let [errorPriorityMessage, setErrorPriorityMessage] = useState("");
+    let [errorDifficultyMessage, setErrorDifficultyMessage] = useState("");
+    let [errorNameMessage, setErrorNameMessage] = useState("");
     const { subjectId } = useParams();
     const navigate = useNavigate();
 
     async function createSubjectTask(e) {
         e.preventDefault();
-        await postTask(subjectId, name, description, priority, difficulty, deadline)
-            .catch((err) => {
-                console.log(err);
-            });
-        navigate(`/subjects/${subjectId}/subject-tasks`);
+        if(validateName()) {
+            await postTask(subjectId, name, description, priority, difficulty, deadline)
+                .catch((err) => {
+                    console.log(err);
+                });
+            navigate(`/subjects/${subjectId}/subject-tasks`);
+        }
+    }
+
+    function validateName() {
+        if(name === "") {
+            setErrorNameMessage("Name must be provided");
+            return false;
+        }
+        return true;
     }
 
     function validateDate(date) {
         const dateNow = new Date().getTime()
         const dateProvided = new Date(date).getTime();
         if(dateNow >= dateProvided) {
-            setErrorMessage("The deadline must be set in the future");
+            setErrorDeadlineMessage("The deadline must be set in the future");
         } else {
             setDeadline(date);
-            setErrorMessage("");
+            setErrorDeadlineMessage("");
+        }
+    }
+
+    function validatePriority(pr) {
+        if(pr <= 0 || pr > 5) {
+            setErrorPriorityMessage("The priority value must be between 1 and 5");
+        } else {
+            setPriority(pr);
+            setErrorPriorityMessage("");
+        }
+    }
+
+    function validateDifficulty(diff) {
+        if(diff <= 0 || diff > 5) {
+            setErrorDifficultyMessage("The difficulty value must be between 1 and 5");
+        } else {
+            setDifficulty(diff);
+            setErrorDifficultyMessage("");
         }
     }
 
@@ -42,10 +74,37 @@ function SubjectTaskCreatePage() {
             <Wrapper>
                 <form>
                     {
-                        errorMessage !== "" ?
+                        errorDeadlineMessage !== "" ?
                         <Row className="mt-2 pe-3 px-3">
                             <div className="alert alert-danger">
-                                {errorMessage}
+                                {errorDeadlineMessage}
+                            </div>
+                        </Row> :
+                        ""
+                    }
+                    {
+                        errorPriorityMessage !== "" ?
+                        <Row className="mt-2 pe-3 px-3">
+                            <div className="alert alert-danger">
+                                {errorPriorityMessage}
+                            </div>
+                        </Row> :
+                        ""
+                    }
+                    {
+                        errorDifficultyMessage !== "" ?
+                        <Row className="mt-2 pe-3 px-3">
+                            <div className="alert alert-danger">
+                                {errorDifficultyMessage}
+                            </div>
+                        </Row> :
+                        ""
+                    }
+                    {
+                        errorNameMessage !== "" ?
+                        <Row className="mt-2 pe-3 px-3">
+                            <div className="alert alert-danger">
+                                {errorNameMessage}
                             </div>
                         </Row> :
                         ""
@@ -71,7 +130,7 @@ function SubjectTaskCreatePage() {
                             <h3>Task priority (1-5)</h3>
                         </Col>
                         <Col>
-                            <input type="number" text="Priority" required value={priority} min="1" max="5" onChange={(e) => setPriority(e.target.value)} />
+                            <input type="number" text="Priority" required value={priority} min="1" max="5" onChange={(e) => validatePriority(e.target.value)} />
                         </Col>
                     </Row>
                     <Row className="mt-5 pe-3 px-3">
@@ -79,7 +138,7 @@ function SubjectTaskCreatePage() {
                             <h3>Task difficulty (1-5)</h3>
                         </Col>
                         <Col>
-                            <input type="number" text="Difficulty" required value={difficulty} min="1" max="5" onChange={(e) => setDifficulty(e.target.value)} />
+                            <input type="number" text="Difficulty" required value={difficulty} min="1" max="5" onChange={(e) => validateDifficulty(e.target.value)} />
                         </Col>
                     </Row>
                     <Row className="mt-5 pe-3 px-3">
@@ -101,7 +160,7 @@ function SubjectTaskCreatePage() {
                     </Row>
                     <Row className="mt-5 pb-3 pe-3 px-3">
                         <Col>
-                            <LoudButton disable={errorMessage !== ""} text="Create" action={(e) => createSubjectTask(e)} />
+                            <LoudButton text="Create" action={(e) => createSubjectTask(e)} />
                         </Col>
                     </Row>
                 </form>

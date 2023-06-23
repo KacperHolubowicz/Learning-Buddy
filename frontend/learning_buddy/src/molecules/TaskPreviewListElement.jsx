@@ -17,7 +17,11 @@ function TaskPreviewListElement({task, id}) {
                 <ListElementItem text={task.name}/>
                 <ListElementItem text={task.finished ? "✓" : "X"} />
                 <div style={{display: "flex", marginLeft: "auto"}}>
-                    <ListElementOperation text="Edit" action={() => navigate(`/subject-tasks/${id}/edit`)}/>
+                    {
+                        !task.finished?
+                        <ListElementOperation text="Edit" action={() => navigate(`/subject-tasks/${id}/edit`)}/> :
+                        ""
+                    }
                     <ListElementOperation text="Delete" action={() => navigate(`/subject-tasks/${id}/delete`)}/> 
                 </div>
             </ListElementBackground>
