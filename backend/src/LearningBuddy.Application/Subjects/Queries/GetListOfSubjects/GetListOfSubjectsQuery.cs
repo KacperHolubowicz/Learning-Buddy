@@ -39,6 +39,7 @@ namespace LearningBuddy.Application.Subjects.Queries.GetListOfSubjects
                 {
                     ID = s.ID,
                     Name = s.Name,
+                    Description = s.Description,
                     Tags = s.Tags.Select(t => t.Value),
                     Thumbnail = s.Thumbnail,
                     Finished = s.Finished,

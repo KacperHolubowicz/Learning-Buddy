@@ -4,12 +4,15 @@ import SubjectListElement from "../../molecules/SubjectListElement";
 import Stack from "react-bootstrap/Stack";
 import SubjectSearcher from "../../molecules/SubjectSearcher";
 import PageFooter from "../../molecules/PageFooter";
+import LoudButton from "../../atoms/LoudButton";
+import { useNavigate } from "react-router-dom";
 
 function SubjectListPage() {
     let [subjects, setSubjects] = useState([]);
     let [search, setSearch] = useState("");
     let [page, setPage] = useState(1);
     let [pagination, setPagination] = useState({});
+    const navigate = useNavigate();
 
     async function fetchData() {
         await getSubjects(search, page)
@@ -34,6 +37,7 @@ function SubjectListPage() {
             <Stack gap={2} className="d-flex align-items-center">
                 <span />
                 <SubjectSearcher search={search} setSearch={setSearch} searchAction={() => fetchData()}/>
+                <LoudButton text="Create subject" action={() => navigate("new")} />
                 {
                     subjects !== null ?
                     subjects.length === 0 ?

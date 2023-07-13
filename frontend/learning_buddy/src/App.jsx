@@ -21,6 +21,7 @@ import LearningSourceEditPage from './pages/learning-sources/LearningSourceEditP
 import SubjectTaskCreatePage from './pages/subject-tasks/SubjectTaskCreatePage';
 import SubjectTaskDeletePage from './pages/subject-tasks/SubjectTaskDeletePage';
 import SubjectTaskEditPage from './pages/subject-tasks/SubjectTaskEditPage';
+import SubjectCreatePage from './pages/subjects/SubjectCreatePage';
 
 function App() {
 
@@ -33,13 +34,18 @@ function App() {
         <Route path="subjects" element={<SubjectListPage />} />
         <Route path="subjects/:subjectId" element={<SubjectPage />} />
         <Route path="subjects/:subjectId/learning-sources" element={<LearningSourceListPage />} />
-        <Route path="subjects/:subjectId/subject-tasks" element={<SubjectTaskListPage />} />
-        <Route path="subjects/:subjectId/learning-sources/new" element={<LearningSourceCreatePage />} />
-        <Route path="subjects/:subjectId/subject-tasks/new" element={<SubjectTaskCreatePage />} />
-        <Route path="learning-sources/:learningSourceId/edit" element={<LearningSourceEditPage />}/>
-        <Route path="learning-sources/:learningSourceId/delete" element={<LearningSourceDeletePage />}/>
-        <Route path="subject-tasks/:subjectTaskId/edit" element={<SubjectTaskEditPage />} />
-        <Route path="subject-tasks/:subjectTaskId/delete" element={<SubjectTaskDeletePage />} />
+        <Route element={<Authorize />}>
+          <Route path="subjects/:subjectId/edit" />
+          <Route path="subjects/:subjectId/delete" />
+          <Route path="subjects/new" element={<SubjectCreatePage />} />
+          <Route path="subjects/:subjectId/subject-tasks" element={<SubjectTaskListPage />} />
+          <Route path="subjects/:subjectId/learning-sources/new" element={<LearningSourceCreatePage />} />
+          <Route path="subjects/:subjectId/subject-tasks/new" element={<SubjectTaskCreatePage />} />
+          <Route path="learning-sources/:learningSourceId/edit" element={<LearningSourceEditPage />} />
+          <Route path="learning-sources/:learningSourceId/delete" element={<LearningSourceDeletePage />} />
+          <Route path="subject-tasks/:subjectTaskId/edit" element={<SubjectTaskEditPage />} />
+          <Route path="subject-tasks/:subjectTaskId/delete" element={<SubjectTaskDeletePage />} />
+        </Route>
         <Route path="login" element={<LoginPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Route>
