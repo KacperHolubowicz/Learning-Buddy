@@ -19,7 +19,7 @@ function LoginPage() {
     async function loginHandle() {
         await loginRequest(login, password, setError)
             .then((resp) => {
-                window.localStorage.setItem("username", resp?.data?.userUsername);
+                document.cookie = `username=${resp?.data.userUsername}; max-age=259200;`
                 document.cookie = `accessToken=${resp?.data?.accessToken}; SameSite=Lax; Secure; max-age=300;`
                 setAuth({
                     username: resp?.data?.userUsername,
